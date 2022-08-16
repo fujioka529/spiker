@@ -1,0 +1,43 @@
+//---------------------------------
+//  chart
+//---------------------------------
+.content-chart {
+    height: calc(100% - 257px);
+}
+.chart-area {
+    background: #fff;
+    display: block;
+    margin-top: 16px;
+    padding: 16px;
+    position: relative;
+}
+.chart-main {
+    height: 60%;
+}
+.chart-sub {
+    height: 40%;
+}
+.chart__title {
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 1;
+    margin: 0;
+    span{
+        font-weight: bold;
+    }
+}
+.chart__time{
+    position: absolute;
+    top: 5px;
+    right: 10px;
+}
+.chart__title i {
+    margin-right: 0.2em;
+}
+.chart-container{
+    height: 100%;
+}
+.wrap-chart{
+    position: relative; width: 100%; height: calc( 100% - 24px );
+}
+

@@ -1,0 +1,7 @@
+<template>
+  <router-view></router-view>
+</template>
+
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Open+Sans:wght@400;700&display=swap");
+</style>

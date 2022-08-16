@@ -1,0 +1,37 @@
+/*---------------------------------
+  base
+---------------------------------*/
+
+html {
+    box-sizing: border-box;
+    height: 100%;
+    font-size: medium;
+    font-family: 'Open Sans', 'Noto Sans JP', 游ゴシック, 'Yu Gothic', 游ゴシック体, YuGothic, 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', 'Meiryo UI', メイリオ, Meiryo, sans-serif;
+    letter-spacing: .05em;
+    word-break: break-all;
+    font-size: 62.5%;
+}
+
+body {
+    font-size: 1.4rem;
+    line-height: 1.5;
+    height: 100%;
+    font-feature-settings: "palt";
+    color: #222;
+    background: #fff;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+a {
+    color: $main-color;
+    transition : all 0.3s;
+}
+
+a:hover {
+    color: $link-light;
+    opacity: 0.8;
+}

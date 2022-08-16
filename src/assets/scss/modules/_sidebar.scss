@@ -1,0 +1,43 @@
+//---------------------------------
+//  sidebar
+//---------------------------------
+.sidebar {
+    flex: 0 0 56px;
+    width: 56px;
+    height: 100vh;
+    padding: 13px 0;
+    text-align: center;
+    border-right: 1px solid $border-sidebar-gray;
+}
+
+.sidebar__logo .logo{
+    display: block;    
+    width: 42px;
+    height: 42px;
+    margin: auto;
+    margin-bottom: 20px;
+    padding-top: 3px;
+    img{
+        width:36px;
+        height: 36px;
+    }
+}
+
+.sidebar ul {
+}
+.sidebar li {
+    margin-bottom: 20px;
+    text-align: center;
+}
+.sidebar li a {
+    display: block;
+    width: 42px;
+    height: 42px;
+    line-height: 36px;
+    font-size: 24px;
+    margin: auto;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid $border-light-gray;
+    color: $text-color;
+}
