@@ -22,10 +22,14 @@ const messages = {
     measurementUpdateAt: 'LatestAt',
     measurementTime: 'Minutes',
 
+    beginTime: 'beginTime',
+    endTime: ' endTime',
+
     prev: 'prev',
     next: 'next',
 
     intervention: 'INT',
+    medicalIntervention: 'Medical Intervention',
     drop: 'drop',
     change_position: 'Change Position',
     doctor_call: 'Doctor Call',
@@ -113,6 +117,7 @@ const messages = {
     next: '次へ',
 
     intervention: '医療介入',
+    medicalIntervention: '医療介入',
     drop: '点滴',
     change_position: '姿勢変更',
     doctor_call: '医者呼出',
@@ -130,6 +135,9 @@ const messages = {
     callDoctorFromNow: '今から対応をはじめますか？アラーム音は停止されます。',
     terminate: '計測終了',
     terminateMeasurement: 'この計測を終了しますか?',
+
+    beginTime: '開始時間',
+    endTime: '終了時間',
 
     patientList: '患者一覧',
     settings: '設定',

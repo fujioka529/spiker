@@ -1,24 +1,11 @@
 import Chart, { ChartOptions } from 'chart.js/auto'
 import 'chartjs-adapter-date-fns'
 import useChartDragDrop from '../composables/dragDrop'
-import { Event } from '../types/response-types'
-import { riskToGraphColor } from '../shared/consts'
+import { Event, Intervention } from '../types/response-types'
+import { interventionColors, riskToGraphColor } from '../shared/consts'
+import { Area } from '../shared/classes'
 
 const { onDragArea } = useChartDragDrop()
-
-export class Area {
-  beginPos: number
-  endPos: number
-  beginTime: number
-  endTime: number
-
-  constructor(begin: number, end: number, beginTime: number, endTime: number) {
-    this.beginPos = begin
-    this.endPos = end
-    this.beginTime = beginTime
-    this.endTime = endTime
-  }
-}
 
 export interface CTGChartConfigutaion {
   graphTitle: string
@@ -28,7 +15,7 @@ export interface CTGChartConfigutaion {
   yMax: number
   isFHR: boolean
   updateDragArea:
-    | ((chart: Chart, begin: number, end: number) => void)
+    | ((chart: Chart, event: string, begin: number, end: number) => void)
     | undefined
 }
 
@@ -48,12 +35,12 @@ export default class CTGChart {
   chart: Chart
   area: Area | null
   events: Event[]
-  annotates: Event[]
+  interventions: Intervention[]
   selectedEventId: number
   selectedAnnotationId: number
   alertId: number
   showRisk: boolean
-  showAnnotation: boolean
+  showIntervention: boolean
 
   constructor(
     ctx: CanvasRenderingContext2D,
@@ -64,9 +51,9 @@ export default class CTGChart {
     this.chart = this.createChart(this.config)
     this.area = null
     this.events = []
-    this.annotates = []
+    this.interventions = []
     this.showRisk = true
-    this.showAnnotation = true
+    this.showIntervention = true
     this.selectedEventId = -1
     this.selectedAnnotationId = -1
     this.alertId = -1
@@ -90,6 +77,11 @@ export default class CTGChart {
     this.chart.update()
   }
 
+  updateInterventions(interventions: Intervention[]) {
+    this.interventions = interventions
+    this.chart.update()
+  }
+
   updateSelectedEventId(id: number) {
     if (this.selectedEventId != id) {
       this.selectedEventId = id
@@ -109,11 +101,6 @@ export default class CTGChart {
       this.alertId = id
       this.chart.update()
     }
-  }
-
-  updateAnnotates(events: Event[]) {
-    this.annotates = events
-    this.chart.update()
   }
 
   // 全テータをクリアする。
@@ -236,17 +223,17 @@ export default class CTGChart {
           )
         })
       }
-      if (this.showAnnotation && this.annotates) {
-        this.annotates.forEach((annotation: Annotation) => {
+      if (this.showIntervention && this.interventions) {
+        this.interventions.forEach((intervention: Intervention) => {
           let beginPos = xscale.getPixelForValue(
-            new Date(annotation.rangeFrom).getTime()
+            new Date(intervention.rangeFrom).getTime()
           )
           let endPos = xscale.getPixelForValue(
-            new Date(annotation.rangeUntil).getTime()
+            new Date(intervention.rangeUntil).getTime()
           )
-          this.ctx.fillStyle = riskToGraphColor(annotation.risk)
+          this.ctx.fillStyle = interventionColors(intervention.interventionKind)
           let height =
-            annotation.id == this.selectedAnnotationId
+            intervention.id == this.selectedAnnotationId
               ? yscale.getPixelForValue(this.config.yMin) -
                 yscale.getPixelForValue(this.config.yMax - annotateHeight)
               : annotateHeight
@@ -260,7 +247,7 @@ export default class CTGChart {
       }
       if (this.area) {
         // ドラッグエリアの表示。
-        this.ctx.fillStyle = 'rgba(192, 255, 192, 0.5)'
+        this.ctx.fillStyle = 'rgba(192, 100, 192, 0.5)'
         this.ctx.fillRect(
           this.area.beginPos,
           yscale.getPixelForValue(this.config.yMax),

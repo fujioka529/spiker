@@ -12,6 +12,9 @@ import './assets/scss/style.scss'
 import './assets/fontawesome/css/all.min.css'
 import { intervalManager } from './lib/interval_manager'
 
+import Datepicker from '@vuepic/vue-datepicker'
+import '@vuepic/vue-datepicker/dist/main.css'
+
 const pinia = createPinia()
 pinia.use(piniaPersist)
 
@@ -32,4 +35,5 @@ app.use(pinia)
 app.use(i18n)
 app.config.globalProperties.$dayjs = dayjs
 app.use(visibility)
+app.component('Datepicker', Datepicker)
 app.mount('#app')

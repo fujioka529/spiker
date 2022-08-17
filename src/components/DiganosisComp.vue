@@ -97,10 +97,10 @@ const activeTab = ref<EventType | undefined>();
             </div>
             <div class="">
               <template v-if="intervention.isIntervention">
-                {{ $t(intervention.interventionKind) }}
+                {{ $t(intervention.interventionKind) }} <br />
               </template>
               <template v-if="intervention.uterusOstium">
-                {{ $t("uterusOstium") }}: {{ intervention.uterusOstium }} cm
+                {{ $t("uterusOstium") }}: {{ intervention.uterusOstium }} cm <br />
               </template>
               {{ $t("memo") }}：{{ intervention.memo }}
             </div>

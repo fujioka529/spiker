@@ -1,14 +1,18 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import { Event } from "../types/response-types";
+import { Event, Intervention } from "../types/response-types";
 import CTGChart from "../lib/chart";
+import { Area } from "../shared/classes";
+import MedicalIntervention from "../components/modal/MedicalIntervention.vue";
 
 interface Props {
+  measurementId: number;
   hrLabels: number[];
   hrValues: number[];
   tcLabels: number[];
   tcValues: number[];
   events: Event[];
+  interventions: Intervention[];
 }
 
 const props = defineProps<Props>();
@@ -20,6 +24,32 @@ const latestTime = ref<string>();
 let hrChart: CTGChart | null = null;
 let tcChart: CTGChart | null = null;
 
+const beginTime = ref<number>();
+const endTime = ref<number>();
+
+const isOpenMedicalIntervention = ref<boolean>(false);
+
+const updateArea = (chart: Chart, event: string, begin: number, end: number) => {
+  const xscale = chart.scales["x"];
+  beginTime.value = xscale.getValueForPixel(begin);
+  endTime.value = xscale.getValueForPixel(end);
+  if (beginTime.value && endTime.value) {
+    let area = new Area(begin, end, beginTime.value, endTime.value);
+    hrChart?.drawArea(area);
+    tcChart?.drawArea(area);
+
+    if (event == "mouseup") {
+      isOpenMedicalIntervention.value = true;
+    }
+  }
+};
+
+const onCloseMedicalIntervention = () => {
+  isOpenMedicalIntervention.value = false;
+  hrChart?.drawArea(null);
+  tcChart?.drawArea(null);
+};
+
 watch(
   () => hrChartRef.value,
   (newRef) => {
@@ -27,7 +57,7 @@ watch(
       graphTitle: "HR",
       borderColor: "rgba(100, 100, 100, 1.0)",
       borderWidth: 1.0,
-      updateDragArea: undefined,
+      updateDragArea: updateArea,
       yMin: 30.0,
       yMax: 200.0,
       isFHR: true,
@@ -76,6 +106,13 @@ watch(
   }
 );
 
+watch(
+  () => props.interventions,
+  () => {
+    hrChart?.updateInterventions(props.interventions);
+  }
+);
+
 import Loading from "../components/Loading.vue";
 import dayjs from "dayjs";
 const loading = ref<boolean>(true);
@@ -105,6 +142,13 @@ const loading = ref<boolean>(true);
     </div>
   </section>
   <!-- /.content-chart -->
+  <medical-intervention
+    v-if="isOpenMedicalIntervention"
+    @on-close-clicked="onCloseMedicalIntervention"
+    :measurement-id="measurementId"
+    :begin-time="beginTime"
+    :end-time="endTime"
+  />
 </template>
 
 <style>

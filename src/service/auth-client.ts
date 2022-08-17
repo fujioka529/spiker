@@ -1,7 +1,11 @@
 import { number } from '@intlify/core-base'
 import { strict } from 'assert'
 import { stringify } from 'querystring'
-import { AnnotationBody, CloseBody } from '../types/request-types'
+import {
+  AnnotationBody,
+  CloseBody,
+  MedicalInterventionBody,
+} from '../types/request-types'
 import {
   Annotation,
   CurrentMeasurements,
@@ -165,6 +169,16 @@ class AuthClient extends AuthApiRequest {
       {
         memo: memo,
       }
+    )
+  }
+
+  public async createMedicalIntervention(
+    measurementId: number,
+    params: MedicalInterventionBody
+  ): Promise<void> {
+    await this._post<MedicalInterventionBody, void>(
+      `/1/measurements/${measurementId}/medical_events`,
+      params
     )
   }
 }

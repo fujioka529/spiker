@@ -273,11 +273,13 @@ onBeforeUnmount(() => {
     />
     <!-- section chart -->
     <chart-comp
+      v-model:measurement-id="selectedMeasurement.id"
       v-model:hr-labels="hrLabels"
       v-model:hr-values="hrValues"
       v-model:tc-labels="tcLabels"
       v-model:tc-values="tcValues"
       v-model:events="events"
+      v-model:interventions="interventions"
     />
     <!-- section content-footer -->
     <diganosis-comp v-model:events="events" v-model:interventions="interventions" />

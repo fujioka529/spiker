@@ -25,3 +25,18 @@ export const alertNowOptions: Option[] = [
     value: 5,
   },
 ]
+
+export const medicalInterventionOptions: Option[] = [
+  {
+    label: 'drop',
+    value: 'drop',
+  },
+  {
+    label: 'change_position',
+    value: 'change_position',
+  },
+  {
+    label: 'doctor_call',
+    value: 'doctor_call',
+  },
+]

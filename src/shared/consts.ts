@@ -20,3 +20,17 @@ export const riskToGraphColor = (riskNumber: number): string => {
     'rgba(200, 50, 50, 0.5)',
   ][riskNumber - 1]
 }
+
+export const interventionColors = (intervention: string | null): string => {
+  if (intervention) {
+    let color = {
+      drop: 'rgba(100, 100, 200, 0.5)',
+      change_position: 'rgba(200, 200, 0, 0.5)',
+      doctor_call: 'rgba(200, 50, 50, 0.5)',
+    }[intervention]
+    if (color) {
+      return color
+    }
+  }
+  return 'rgba(200, 200, 200, 0.5)'
+}

@@ -1,4 +1,5 @@
 import { authClient } from '../../service/auth-client'
+import { MedicalInterventionBody } from '../../types/request-types'
 import {
   CurrentMeasurement,
   CurrentMeasurements,
@@ -113,6 +114,13 @@ const useMeasurement = () => {
     await authClient.closeMeasurement(measurementId, memo)
   }
 
+  const createMedicalIntervention = async (
+    measurementId: number,
+    params: MedicalInterventionBody
+  ) => {
+    await authClient.createMedicalIntervention(measurementId, params)
+  }
+
   return {
     listMeasurements,
     currentMeasurements,
@@ -125,6 +133,7 @@ const useMeasurement = () => {
     closeEvent,
     closeAnnotation,
     closeMeasurement,
+    createMedicalIntervention,
   }
 }
 
