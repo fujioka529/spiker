@@ -10,5 +10,5 @@ export type MedicalInterventionBody = {
   rangeFrom: string
   rangeUntil: string
   memo: string
-  uterusOstium: number
+  uterusOstium: number | null
 }

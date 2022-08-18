@@ -9,9 +9,8 @@ import {
 import {
   Annotation,
   CurrentMeasurements,
+  CurrentMeasurement,
   Events,
-  Hospital,
-  Hospitals,
   Interventions,
   Measurements,
   SensorData,

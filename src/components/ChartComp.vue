@@ -1,9 +1,14 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, watch, getCurrentInstance } from "vue";
 import { Event, Intervention } from "../types/response-types";
 import CTGChart from "../lib/chart";
 import { Area } from "../shared/classes";
+import Chart from "chart.js/auto";
 import MedicalIntervention from "../components/modal/MedicalIntervention.vue";
+import Loading from "../components/Loading.vue";
+
+const app = getCurrentInstance();
+const dayjs = app?.appContext.config.globalProperties.$dayjs;
 
 interface Props {
   measurementId: number;
@@ -113,8 +118,6 @@ watch(
   }
 );
 
-import Loading from "../components/Loading.vue";
-import dayjs from "dayjs";
 const loading = ref<boolean>(true);
 </script>
 
@@ -122,8 +125,8 @@ const loading = ref<boolean>(true);
   <section class="content-chart">
     <div class="chart-area chart-main">
       <div class="chart__time">
-        <span>{{ $dayjs(latestTime).format("HH:mm:ss") }}</span> / UTC:
-        {{ $dayjs(latestTime).utc().format("HH:mm:ss") }}
+        <span>{{ dayjs(latestTime).format("HH:mm:ss") }}</span> / UTC:
+        {{ dayjs(latestTime).utc().format("HH:mm:ss") }}
       </div>
       <h2 class="chart__title"><i class="fa-solid fa-heart"></i>Heart Rate</h2>
       <div class="wrap-chart">
@@ -143,7 +146,7 @@ const loading = ref<boolean>(true);
   </section>
   <!-- /.content-chart -->
   <medical-intervention
-    v-if="isOpenMedicalIntervention"
+    v-if="isOpenMedicalIntervention && beginTime && endTime"
     @on-close-clicked="onCloseMedicalIntervention"
     :measurement-id="measurementId"
     :begin-time="beginTime"

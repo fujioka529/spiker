@@ -17,7 +17,7 @@ const logout = () => {
   <header>
     <a class="header__logo">
       <img src="../assets/images/logotype.png" alt="SPIKER" />
-      <div class="header__name">JUDY Monitor</div>
+      <div class="header__name">ALERT Monitor</div>
     </a>
 
     <div class="header__login">

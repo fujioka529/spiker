@@ -1,14 +1,19 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, inject, getCurrentInstance } from "vue";
 import { useRoute } from "vue-router";
 
 import HeaderComp from "../components/HeaderComp.vue";
 import Loading from "../components/Loading.vue";
-import Paginate from "vuejs-paginate-next";
 
 import useMeasurement from "../composables/net/measurement";
 import { Measurement } from "../types/response-types";
-import dayjs from "dayjs";
+
+import Paginate from "vuejs-paginate-next";
+
+// tslint:disable-next-line:no-var-requires
+//const Paginate = require("vuejs-paginate-next");
+const app = getCurrentInstance();
+const dayjs = app?.appContext.config.globalProperties.$dayjs;
 
 const total = ref<number>(0);
 const measurements = ref<Measurement[]>([]);
@@ -103,7 +108,7 @@ onMounted(() => {
         :click-handler="onPageClicked"
         :prev-text="$t('prev')"
         :next-text="$t('next')"
-        :container-class="'pagination'"
+        container-class="pagination"
       >
       </paginate>
 
@@ -134,10 +139,10 @@ onMounted(() => {
             </div>
             <div class="list__col list__code">{{ measurement.code }}</div>
             <div class="list__col list__update">
-              {{ $dayjs(measurement.firstTime).format("YYYY-MM-DD HH:mm:ss") }}
+              {{ dayjs(measurement.firstTime).format("YYYY-MM-DD HH:mm:ss") }}
             </div>
             <div class="list__col list__update">
-              {{ $dayjs(measurement.lastTime).format("YYYY-MM-DD HH:mm:ss") }}
+              {{ dayjs(measurement.lastTime).format("YYYY-MM-DD HH:mm:ss") }}
             </div>
             <div class="list__col list__update">
               {{ measurementTime(measurement) }}
@@ -148,7 +153,6 @@ onMounted(() => {
                   :to="{
                     name: 'measurementChart',
                     params: {
-                      uuid: hospitalUuid,
                       id: measurement.id,
                     },
                   }"
@@ -164,7 +168,7 @@ onMounted(() => {
           :click-handler="onPageClicked"
           :prev-text="$t('prev')"
           :next-text="$t('next')"
-          :container-class="pagination"
+          container-class="pagination"
         >
         </paginate>
 

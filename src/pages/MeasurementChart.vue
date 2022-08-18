@@ -1,16 +1,28 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref, toRefs, watch } from "vue";
+import {
+  computed,
+  onMounted,
+  reactive,
+  ref,
+  toRefs,
+  watch,
+  inject,
+  getCurrentInstance,
+} from "vue";
 import { useRoute } from "vue-router";
 import useMeasurement from "../composables/net/measurement";
 import { useControlPanelStore } from "../store/control_panel";
 import { CurrentMeasurement, Intervention, Event } from "../types/response-types";
-
 import SummaryComp from "../components/SummaryComp.vue";
 import ChartComp from "../components/ChartComp.vue";
 import DiganosisComp from "../components/DiganosisComp.vue";
+import { dataIntervalMillSecs } from "../shared/consts";
 
-const hospitalUuid = computed(() => useRoute().params.uuid as string);
 const measurementId = computed(() => useRoute().params.id as string);
+
+//const dayjs = inject("dayjs");
+const app = getCurrentInstance();
+const dayjs = app?.appContext.config.globalProperties.$dayjs;
 
 const {
   fetchMeasurement,
@@ -18,7 +30,7 @@ const {
   fetchTocos,
   listEvents,
   listInterventions,
-} = useMeasurement(hospitalUuid.value);
+} = useMeasurement();
 const measurement = ref<CurrentMeasurement>();
 
 const store = useControlPanelStore();
@@ -80,9 +92,6 @@ const tcLabels = ref<number[]>([]);
 const tcValues = ref<number[]>([]);
 const events = ref<Event[]>([]);
 const interventions = ref<Intervention[]>([]);
-
-import { dataIntervalMillSecs } from "../shared/consts";
-import dayjs from "dayjs";
 
 const updateChartData = () => {
   if (measurement.value && store.end) {
@@ -162,11 +171,13 @@ onMounted(async () => {
     />
     <!-- section chart -->
     <chart-comp
-      v-model:hr-labels="hrLabels"
-      v-model:hr-values="hrValues"
-      v-model:tc-labels="tcLabels"
-      v-model:tc-values="tcValues"
-      v-model:events="events"
+      :measurement-id="measurement.id"
+      :hr-labels="hrLabels"
+      :hr-values="hrValues"
+      :tc-labels="tcLabels"
+      :tc-values="tcValues"
+      :events="events"
+      :interventions="interventions"
     />
     <!-- section content-footer -->
     <diganosis-comp v-model:events="events" v-model:interventions="interventions" />

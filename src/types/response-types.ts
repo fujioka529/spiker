@@ -80,8 +80,8 @@ export type Diagnosis = {
   category: string
   deceleration: string
   parameters: number[]
-  variability: string
-  variabilityBpm: number | null
+  variability: string | null
+  variabilityBpm: number | number
 }
 
 export type EventType = 'annotation' | 'computed'

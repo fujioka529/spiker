@@ -5,12 +5,13 @@ import Measurement from '../pages/Measurement.vue'
 import MeasurementChart from '../pages/MeasurementChart.vue'
 import Monitor from '../pages/Monitor.vue'
 import Login from '../pages/Login.vue'
+import MainLayout from '../layouts/MainLayout.vue'
 
 const routes = [
   { path: '/login', name: 'login', component: Login },
   {
     path: '/',
-    component: import('../layouts/MainLayout.vue'),
+    component: MainLayout,
     children: [
       {
         path: '/',
@@ -47,6 +48,7 @@ router.beforeEach((to, from, next) => {
   ) {
     next({ path: '/login', query: { redirect: to.fullPath } })
   } else {
+    console.log('route')
     next()
   }
 })

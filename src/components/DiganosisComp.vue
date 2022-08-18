@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, getCurrentInstance } from "vue";
 import { Event, Intervention } from "../types/response-types";
+
+const app = getCurrentInstance();
+const dayjs = app?.appContext.config.globalProperties.$dayjs;
 
 interface Props {
   events: Event[];
@@ -55,17 +58,19 @@ const activeTab = ref<EventType | undefined>();
           <li class="footer-panel__item" v-for="event in events" :key="event.id">
             <div class="item__title">
               <span>
-                {{ $dayjs(event.rangeFrom).format("HH:mm:ss") }}
+                {{ dayjs(event.rangeFrom).format("HH:mm:ss") }}
                 ~
-                {{ $dayjs(event.rangeUntil).format("HH:mm:ss") }}
+                {{ dayjs(event.rangeUntil).format("HH:mm:ss") }}
               </span>
             </div>
-            <div class="">
-              <template v-if="event.baseline">
-                <p>基線 {{ event.baselineBpm }}bpm</p>
+            <div class="" v-if="event.diagnosis">
+              <template v-if="event.diagnosis.baseline">
+                <p>基線 {{ event.diagnosis.baselineBpm }}bpm</p>
               </template>
-              <template v-if="event.variability">
-                <p>基線細変動: {{ event.variabilityBpm }}bpm</p></template
+              <template
+                v-if="event.diagnosis.variability && event.diagnosis.variabilityBpm"
+              >
+                <p>基線細変動: {{ event.diagnosis.variabilityBpm }}bpm</p></template
               >
               <template v-if="event.risk"
                 ><p>リスク {{ event.risk }}</p>
@@ -90,9 +95,9 @@ const activeTab = ref<EventType | undefined>();
           >
             <div class="item__title">
               <span
-                >{{ $dayjs(intervention.rangeFrom).format("HH:mm:ss") }}
+                >{{ dayjs(intervention.rangeFrom).format("HH:mm:ss") }}
                 ~
-                {{ $dayjs(intervention.rangeUntil).format("HH:mm:ss") }}</span
+                {{ dayjs(intervention.rangeUntil).format("HH:mm:ss") }}</span
               >
             </div>
             <div class="">

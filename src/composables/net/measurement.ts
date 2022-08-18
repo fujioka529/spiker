@@ -4,6 +4,7 @@ import {
   CurrentMeasurement,
   CurrentMeasurements,
   Event,
+  Measurement,
   Intervention,
 } from '../../types/response-types'
 
@@ -87,13 +88,6 @@ const useMeasurement = () => {
     return res.events
   }
 
-  const createAnnotation = async (
-    measurementId: number,
-    params: AnnotationBody
-  ) => {
-    return await authClient.createAnnotation(measurementId, params)
-  }
-
   const closeEvent = async (
     measurementId: number,
     eventId: number,
@@ -129,7 +123,6 @@ const useMeasurement = () => {
     fetchTocos,
     listEvents,
     listInterventions,
-    createAnnotation,
     closeEvent,
     closeAnnotation,
     closeMeasurement,

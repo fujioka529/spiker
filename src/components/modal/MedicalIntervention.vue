@@ -7,8 +7,7 @@ import useMeasurement from "../../composables/net/measurement";
 
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
-
-const date = ref();
+import { MedicalInterventionBody } from "../../types/request-types";
 
 interface Props {
   measurementId: number;
@@ -47,6 +46,9 @@ const onOKClicked = async () => {
     rangeFrom: new Date(begin.value).toISOString(),
     rangeUntil: new Date(end.value).toISOString(),
     memo: memo.value,
+    isIntervention: false,
+    interventionKind: "",
+    uterusOstium: null,
   };
   if (medicalIntervention.value) {
     body.isIntervention = true;

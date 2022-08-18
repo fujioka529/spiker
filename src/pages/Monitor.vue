@@ -1,21 +1,30 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, reactive, ref, toRefs, watch } from "vue";
+import {
+  onBeforeUnmount,
+  onMounted,
+  reactive,
+  ref,
+  toRefs,
+  watch,
+  getCurrentInstance,
+} from "vue";
 import { useRoute } from "vue-router";
 import { timescaleOptions } from "../shared/options";
-
 import SummaryComp from "../components/SummaryComp.vue";
 import ChartComp from "../components/ChartComp.vue";
 import DiganosisComp from "../components/DiganosisComp.vue";
 import SoundConfirm from "../components/modal/SoundConfirm.vue";
 import Loading from "../components/Loading.vue";
-const loading = ref<boolean>(true);
-
-const activeTab = ref<number>(0);
-
+import { dataIntervalMillSecs } from "../shared/consts";
 import useMeasurement from "../composables/net/measurement";
 import { timerIntervals } from "../shared/consts";
 import { CurrentMeasurement, Event, Intervention } from "../types/response-types";
+import { alertManager } from "../lib/alert";
+import { intervalManager } from "../lib/interval_manager";
+import { useControlPanelStore } from "../store/control_panel";
 
+const loading = ref<boolean>(true);
+const activeTab = ref<number>(0);
 // イベント
 
 const {
@@ -28,7 +37,6 @@ const {
 const measurements = ref<CurrentMeasurement[]>();
 const selectedMeasurement = ref<CurrentMeasurement>();
 
-import { useControlPanelStore } from "../store/control_panel";
 const store = useControlPanelStore();
 
 const { isAuto, timescale } = toRefs(
@@ -83,10 +91,6 @@ const onLatestClicked = () => {
 };
 
 // 計測リクエスト。
-
-import { alertManager } from "../lib/alert";
-
-import { intervalManager } from "../lib/interval_manager";
 
 watch(
   () => selectedMeasurement.value,
@@ -147,9 +151,8 @@ const fetchCurrentMeasuments = async () => {
   }
 };
 
-import { dataIntervalMillSecs } from "../shared/consts";
-import dayjs from "dayjs";
-import { AnnotationBody } from "../types/request-types";
+const app = getCurrentInstance();
+const dayjs = app?.appContext.config.globalProperties.$dayjs;
 
 const hrLabels = ref<number[]>([]);
 const hrValues = ref<number[]>([]);
@@ -165,7 +168,7 @@ const updateChartData = () => {
       store.end,
       store.timescale,
       dataIntervalMillSecs
-    ).then((values) => {
+    ).then((values: [number[], number[]]) => {
       hrLabels.value = values[0];
       hrValues.value = values[1];
     });
@@ -174,7 +177,7 @@ const updateChartData = () => {
       store.end,
       store.timescale,
       dataIntervalMillSecs
-    ).then((values) => {
+    ).then((values: [number[], number[]]) => {
       tcLabels.value = values[0];
       tcValues.value = values[1];
     });
@@ -183,17 +186,19 @@ const updateChartData = () => {
 
 const updateEventData = () => {
   if (selectedMeasurement.value) {
-    listEvents(selectedMeasurement.value?.id, store.eventStart).then((values) => {
-      if (values.length > 0) {
-        events.value = events.value.concat(values);
-        events.value.sort((a, b) => {
-          return dayjs(a.rangeFrom).unix() < dayjs(b.rangeFrom).unix() ? -1 : 1;
-        });
-        store.eventStart = values[values.length - 1].id;
+    listEvents(selectedMeasurement.value?.id, store.eventStart).then(
+      (values: Event[]) => {
+        if (values.length > 0) {
+          events.value = events.value.concat(values);
+          events.value.sort((a, b) => {
+            return dayjs(a.rangeFrom).unix() < dayjs(b.rangeFrom).unix() ? -1 : 1;
+          });
+          store.eventStart = values[values.length - 1].id;
+        }
       }
-    });
+    );
     listInterventions(selectedMeasurement.value?.id, store.inventionStart).then(
-      (values) => {
+      (values: Intervention[]) => {
         if (values.length > 0) {
           interventions.value = interventions.value.concat(values);
           interventions.value.sort((a, b) => {

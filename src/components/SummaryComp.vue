@@ -2,9 +2,12 @@
 import { CurrentMeasurement } from "../types/response-types";
 import { useVModels } from "@vueuse/core";
 import { timescaleOptions } from "../shared/options";
-import { ref } from "vue";
+import { ref, getCurrentInstance } from "vue";
 import CallDoctorModal from "../components/modal/CallDoctorModal.vue";
 import TerminateModal from "../components/modal/TerminateModal.vue";
+
+const app = getCurrentInstance();
+const dayjs = app?.appContext.config.globalProperties.$dayjs;
 
 interface Props {
   measurement: CurrentMeasurement | undefined;
@@ -38,7 +41,7 @@ const isOpenTermination = ref<boolean>(false);
     @on-close-clicked="isOpenTermination = false"
   />
   <call-doctor-modal
-    v-if="isOpenCallDoctor && measurement.latestEvent"
+    v-if="isOpenCallDoctor && measurement && measurement.latestEvent"
     :measurement="measurement"
     @on-close-clicked="isOpenCallDoctor = false"
   />
@@ -52,17 +55,17 @@ const isOpenTermination = ref<boolean>(false);
         <div class="summary__date">
           <i class="fa-regular fa-clock"></i>
           <div class="date-start">
-            {{ $dayjs(measurement.firstTime).format("HH:mm:ss") }}
+            {{ dayjs(measurement.firstTime).format("HH:mm:ss") }}
             <span class="utc"
-              >UTC: {{ $dayjs(measurement.firstTime).utc().format("HH:mm:ss") }}</span
+              >UTC: {{ dayjs(measurement.firstTime).utc().format("HH:mm:ss") }}</span
             >
           </div>
           <div class="date-range"></div>
           <i class="fa-regular fa-clock"></i>
           <div class="date-end">
-            {{ $dayjs(measurement.lastTime).format("HH:mm:ss") }}
+            {{ dayjs(measurement.lastTime).format("HH:mm:ss") }}
             <span class="utc"
-              >UTC: {{ $dayjs(measurement.lastTime).utc().format("HH:mm:ss") }}</span
+              >UTC: {{ dayjs(measurement.lastTime).utc().format("HH:mm:ss") }}</span
             >
           </div>
         </div>
@@ -96,7 +99,7 @@ const isOpenTermination = ref<boolean>(false);
             </dt>
             <dd>
               <template v-if="measurement.lastestIntervention">
-                {{ $t(measurement.interventionKind) }}
+                {{ $t(measurement.lastestIntervention.interventionKind) }}
               </template>
               <template v-else>N/A </template>
             </dd>

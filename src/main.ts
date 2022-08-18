@@ -26,7 +26,8 @@ visibility.change((evt, hidden) => {
   }
 })
 
-import * as utc from 'dayjs/plugin/utc'
+import utc from 'dayjs/plugin/utc'
+import { alertNowOptions } from './shared/options'
 dayjs.extend(utc)
 
 const app = createApp(App)
@@ -35,5 +36,6 @@ app.use(pinia)
 app.use(i18n)
 app.config.globalProperties.$dayjs = dayjs
 app.use(visibility)
+//app.provide('dayjs', dayjs)
 app.component('Datepicker', Datepicker)
 app.mount('#app')
