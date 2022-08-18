@@ -113,6 +113,7 @@ const isOpenTermination = ref<boolean>(false);
             <dd>
               <template
                 v-if="
+                  measurement.latestEvent &&
                   measurement.latestEvent.diagnosis &&
                   measurement.latestEvent.diagnosis.baselineBpm
                 "
@@ -130,6 +131,7 @@ const isOpenTermination = ref<boolean>(false);
             <dd>
               <template
                 v-if="
+                  measurement.latestEvent &&
                   measurement.latestEvent.diagnosis &&
                   measurement.latestEvent.diagnosis.variabilityBpm
                 "

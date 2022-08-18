@@ -50,7 +50,7 @@ const useMeasurement = () => {
     var values: number[] = []
     res.records.forEach((record) => {
       times.push(record.observedAt)
-      values.push(record.value)
+      values.push(record.value ? record.value : NaN)
     })
     return [times, values]
   }
@@ -66,7 +66,7 @@ const useMeasurement = () => {
     var values: number[] = []
     res.records.forEach((record) => {
       times.push(record.observedAt)
-      values.push(record.value)
+      values.push(record.value ? record.value : NaN)
     })
     return [times, values]
   }

@@ -91,9 +91,11 @@ watch(
   () => props.hrLabels,
   () => {
     hrChart?.updateData(props.hrLabels, props.hrValues);
-    latestTime.value = dayjs
-      .unix(props.hrLabels[props.hrLabels.length - 1] / 1000.0)
-      .toISOString();
+    if (props.hrLabels.length > 0) {
+      latestTime.value = dayjs
+        .unix(props.hrLabels[props.hrLabels.length - 1] / 1000.0)
+        .toISOString();
+    }
   }
 );
 

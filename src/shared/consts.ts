@@ -9,7 +9,7 @@ export { timerIntervals }
 
 export const defaultDataMinutes: number = 6
 
-export const dataIntervalMillSecs: number = 250
+export const dataIntervalMillSecs: number = 1000
 
 export const riskToGraphColor = (riskNumber: number): string => {
   return [
