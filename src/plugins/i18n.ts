@@ -205,7 +205,7 @@ const messages = {
 }
 
 const i18n = createI18n({
-  locale: 'ja', // set locale
+  locale: 'en', // set locale
   fallbackFormat: 'en', // set fallback
   messages, // set locale messages)
   globalInjection: true,

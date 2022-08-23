@@ -205,13 +205,15 @@ const isOpenTermination = ref<boolean>(false);
               'is-disabled': isAuto,
             }"
             @click.stop.prevent="emit('onLatestClicked', null)"
-            >最新</a
+            >{{ $t("latest") }}</a
           >
         </div>
       </div>
+      <!--
       <a v-if="!playback" class="btn btn-mute" href=""
         ><i class="fa-solid fa-bell-slash"></i>Mute</a
       >
+      -->
     </div>
     <!-- /.summary-right -->
   </section>

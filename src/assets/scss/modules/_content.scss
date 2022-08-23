@@ -219,11 +219,19 @@
     align-items: center;
     background: $main-bg-color;
     flex: 1;
+    flex-wrap: wrap;
+    align-content: center;
     height: 100%;
     padding: 5px 10px;
     font-size: 20px;
     font-weight: bold;
     line-height: 1.4;
+}
+.summary-list dl dd span{
+    display: block;
+    width: 100%;
+    font-size: 12px;
+    font-weight: normal;
 }
 .summary-list dl dd a {
     text-decoration: underline;
@@ -243,7 +251,12 @@
     box-sizing: border-box;
     padding-right: 15px;
 }
-
+.btn.is-disabled {
+    background: $bg-gray-light!important;
+    border-color: $bg-gray-light!important;
+    pointer-events: none!important;
+    color: $border-list-gray!important;
+}
 .btn i {
     margin-right: 0.2em;
 }
@@ -300,6 +313,10 @@
     border-radius: 10px;
     font-size: 24px;
     font-weight: bold;
+    &:hover {
+        background: $main-color-dark;
+        color: #fff;
+    }
 }
 .btn-mute {
     display: block;
@@ -365,16 +382,16 @@
     font-weight: bold;
     flex: 0 0 16%;
 }
-
+.btn-auto:hover,
+.btn-latest:hover,
 .btn-auto.is-active {
-    background-color: #fe0000;
-    color: #fff;
+    background: $text-color;
+    color: $main-bg-gray;
+    opacity: 1;
 }
-
-.btn-latest.is-disabled {
-   cursor: not-allowed;
+.btn-auto:hover.is-active{
+    opacity: 0.8;
 }
-
 .control-pager .btn-pager {
     border: 1px solid $border-light-gray;
     display: flex;
@@ -384,16 +401,17 @@
     border-radius: 10px;
     flex: 0 0 3em;
     color: $text-color;
+    &:hover{
+        background: $main-bg-color;
+        border-color: $text-color;
+        opacity: 1;
+    }
     &.pager__prev::before {
         content: "<";
     }
     &.pager__next::after {
         content: ">";
     }
-}
-
-.btn-pager.is-disabled {
-    cursor: not-allowed;
 }
 
 .control-pager .select__wrap {
@@ -470,6 +488,7 @@
     display: block!important;
 }
 .footer-panel__list{
+    display: flex;
     overflow-x: auto;
     white-space: nowrap;
     -webkit-overflow-scrolling: touch;

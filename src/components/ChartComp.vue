@@ -44,7 +44,9 @@ const updateArea = (chart: Chart, event: string, begin: number, end: number) => 
     tcChart?.drawArea(area);
 
     if (event == "mouseup") {
-      isOpenMedicalIntervention.value = true;
+      setTimeout(() => {
+        isOpenMedicalIntervention.value = true;
+      }, 500);
     }
   }
 };
