@@ -46,7 +46,7 @@ export type Antenatal = {
 }
 
 export type Patient = {
-  id: string
+  id: number
   name: string
   memo: string
   createdAt: string

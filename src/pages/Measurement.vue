@@ -6,9 +6,10 @@ import HeaderComp from "../components/HeaderComp.vue";
 import Loading from "../components/Loading.vue";
 
 import useMeasurement from "../composables/net/measurement";
-import { Measurement } from "../types/response-types";
+import { Measurement, Patient } from "../types/response-types";
 
 import Paginate from "vuejs-paginate-next";
+import EditPatientModal from "../components/modal/EditPatientModal.vue";
 
 // tslint:disable-next-line:no-var-requires
 //const Paginate = require("vuejs-paginate-next");
@@ -20,6 +21,7 @@ const measurements = ref<Measurement[]>([]);
 const pageCount = ref<number>(1);
 const perPage = ref<number>(30);
 const offset = ref<number>(0);
+const selectedPatient = ref<Patient | undefined>(undefined);
 
 const { listMeasurements } = useMeasurement();
 
@@ -51,28 +53,39 @@ const onPageClicked = async (page: number) => {
   fetchMeasurements();
 };
 
-// 計測一覧を取得する
+const onOpenEditPatient = (patient: Patient) => {
+  selectedPatient.value = patient;
+  isOpenEditPatient.value = true;
+};
 
 onMounted(() => {
+  // 計測一覧を取得する
   fetchMeasurements();
 });
+
+const isOpenEditPatient = ref<boolean>(false);
 </script>
 
 <template>
   <loading v-if="loading" />
   <header-comp />
+  <edit-patient-modal
+    v-if="isOpenEditPatient"
+    :patient="selectedPatient"
+    @on-close-clicked="isOpenEditPatient = false"
+  />
   <div class="content-main status-success">
     <h1 class="page-title">
       <i class="fa-solid fa-person-pregnant"></i>{{ $t("measurementList") }}
     </h1>
-    <!--
+
     <section class="list-search">
       <div class="list-search__input">
-        <input type="text" id="" name="" required="" />
-        <button type="submit" class="btn list-btn">検索</button>
+        <input type="text" id="" name="" required="" :placeholder="$t('searchWords')" />
+        <button type="submit" class="btn list-btn">{{ $t("search") }}</button>
       </div>
     </section>
-    -->
+
     <section class="list">
       <!--
       <div class="list-filter">
@@ -118,6 +131,7 @@ onMounted(() => {
             <div class="list__col list__id">ID</div>
             <div class="list__col list__status">{{ $t("isClosed") }}</div>
             <div class="list__col list__code">{{ $t("measurementCode") }}</div>
+            <div class="list__col list__code">{{ $t("patientName") }}</div>
             <div class="list__col list__update">{{ $t("measurementStartAt") }}</div>
             <div class="list__col list__update">{{ $t("measurementUpdateAt") }}</div>
             <div class="list__col list__update">{{ $t("measurementTime") }}</div>
@@ -138,6 +152,16 @@ onMounted(() => {
               <template v-else>{{ $t("isRunning") }}</template>
             </div>
             <div class="list__col list__code">{{ measurement.code }}</div>
+            <div class="list__col list__code">
+              <a href="" @click.stop.prevent="onOpenEditPatient(measurement.patient)">
+                <template v-if="measurement.patient.name">
+                  {{ measurement.patient.name }}
+                </template>
+                <template v-else>
+                  {{ $t("n_a") }}
+                </template>
+              </a>
+            </div>
             <div class="list__col list__update">
               {{ dayjs(measurement.firstTime).format("YYYY-MM-DD HH:mm:ss") }}
             </div>

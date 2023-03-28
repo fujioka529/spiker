@@ -180,6 +180,17 @@ class AuthClient extends AuthApiRequest {
       params
     )
   }
+
+  public async updatePatient(
+    patientId: number,
+    name: string,
+    memo: string
+  ): Promise<void> {
+    await this._put(`/1/patients/${patientId}`, {
+      name: name,
+      memo: memo,
+    })
+  }
 }
 
 export const authClient = new AuthClient()

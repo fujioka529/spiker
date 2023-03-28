@@ -70,7 +70,9 @@ const activeTab = ref<EventType | undefined>();
               <template
                 v-if="event.diagnosis.variability && event.diagnosis.variabilityBpm"
               >
-                <p>基線細変動: {{ event.diagnosis.variabilityBpm }}bpm</p></template
+                <p>
+                  {{ $t("Valiability") }}: {{ event.diagnosis.variabilityBpm }}bpm
+                </p></template
               >
               <template v-if="event.risk"
                 ><p>{{ $t("risk") }} {{ event.risk }}</p>

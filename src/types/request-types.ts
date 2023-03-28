@@ -12,3 +12,8 @@ export type MedicalInterventionBody = {
   memo: string
   uterusOstium: number | null
 }
+
+export type PatientBody = {
+  name: string
+  memo: string
+}

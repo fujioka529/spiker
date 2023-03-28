@@ -37,7 +37,7 @@ const messages = {
 
     callDoctor: 'Call Doctor',
     callDoctorFromNow:
-      'Do you take action now? <br/> If OK, the alert sound will be stopped.',
+      'Do you take action now? \n If OK, the alert sound will be stopped.',
     terminate: 'Terminate',
     terminateMeasurement: 'Do you want to close this measurement?',
 
@@ -67,8 +67,8 @@ const messages = {
     'Please input Login ID': 'Please input Login ID',
     'Please input Password': 'Please input Password',
     'Incollect login or password': 'Incollect login or password',
-    BaseLine: '基線',
-    Valiability: '細変動',
+    BaseLine: 'baseline',
+    Valiability: 'valiability',
     'Baseline-NORMAL': 'Baseline-NORMAL',
     'Baseline-ACCELERATION': 'Baseline-ACCELERATION',
     'Baseline-DECELERATION': 'Baseline-DECELERATION',
@@ -100,6 +100,18 @@ const messages = {
     'Hide Confirm': 'Do you want to hide this diagnostic?',
     'Show Confirm': 'Do you want to show this diagnostic?',
     'Delete Confirm': 'Do you want to hide this risk?',
+
+    search: 'Search',
+    searchWords: 'Name or Code',
+    patientId: 'Patient ID',
+    terminalId: 'Terminal ID',
+
+    patientName: 'Patient Name',
+    n_a: 'N/A',
+    editPatientName: 'Edit Patient Name',
+    name: 'name',
+    enterNameAndMemo: 'Enter name and memo',
+    enterNameAlert: "Please enter patient's name",
   },
   ja: {
     login: 'ログイン',
@@ -201,6 +213,17 @@ const messages = {
     'Hide Confirm': 'この診断を病院側で非表示にしますか？',
     'Show Confirm': 'この診断を病院側で表示しますか？',
     'Delete Confirm': 'このリスクを削除しますか？',
+
+    search: '検索',
+    searchWords: '名前または患者コードを入力してください',
+    patientId: '患者ID',
+    terminalId: '端末ID',
+    patientName: '患者名',
+    n_a: 'N/A',
+    editPatientName: '患者名編集',
+    name: '名前',
+    enterNameAndMemo: '名前とメモを入力してください',
+    enterNameAlert: '名前を入力してください',
   },
 }
 

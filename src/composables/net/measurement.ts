@@ -115,6 +115,10 @@ const useMeasurement = () => {
     await authClient.createMedicalIntervention(measurementId, params)
   }
 
+  const updatePatient = async (patientId: number, params: PatientBody) => {
+    await authClient.updatePatient(patientId, params.name, params.memo)
+  }
+
   return {
     listMeasurements,
     currentMeasurements,
@@ -127,6 +131,7 @@ const useMeasurement = () => {
     closeAnnotation,
     closeMeasurement,
     createMedicalIntervention,
+    updatePatient,
   }
 }
 
