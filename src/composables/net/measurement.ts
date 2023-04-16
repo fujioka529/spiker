@@ -1,5 +1,5 @@
 import { authClient } from '../../service/auth-client'
-import { MedicalInterventionBody } from '../../types/request-types'
+import { MedicalInterventionBody, PatientBody } from '../../types/request-types'
 import {
   CurrentMeasurement,
   CurrentMeasurements,
@@ -13,13 +13,15 @@ const useMeasurement = () => {
     limit: number,
     offset: number,
     patient: number | undefined = undefined,
-    terminal: number | undefined = undefined
+    terminal: number | undefined = undefined,
+    keywords: string | undefined = undefined
   ): Promise<[number, Measurement[]]> => {
     let res = await authClient.listMeasurements(
       limit,
       offset,
       patient,
-      terminal
+      terminal,
+      keywords
     )
     return [res.total, res.measurements]
   }

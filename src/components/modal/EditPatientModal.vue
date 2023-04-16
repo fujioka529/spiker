@@ -8,7 +8,7 @@ const loading = ref<boolean>(false);
 const { updatePatient } = useMeasurement();
 
 interface Props {
-  patient: Patient;
+  patient: Patient | undefined;
 }
 const props = defineProps<Props>();
 
@@ -19,14 +19,14 @@ interface Emits {
 const emit = defineEmits<Emits>();
 
 const onUpdatePatient = async () => {
-  if (props.patient.name == "") {
+  if (props.patient!.name == "") {
     return;
   }
   try {
     loading.value = true;
-    await updatePatient(props.patient.id, {
-      name: props.patient.name,
-      memo: props.patient.memo,
+    await updatePatient(props.patient!.id, {
+      name: props.patient!.name,
+      memo: props.patient!.memo,
     });
     emit("onCloseClicked", null);
   } catch (e) {
@@ -52,7 +52,7 @@ const onUpdatePatient = async () => {
           <p>{{ $t("enterNameAndMemo") }}</p>
 
           <div class="item-row">
-            <div class="item">
+            <div class="item" v-if="props.patient">
               <input
                 class="inputs"
                 type="text"
@@ -64,7 +64,7 @@ const onUpdatePatient = async () => {
 
           <div class="item-row">
             <div class="item">
-              <div class="inputs">
+              <div class="inputs" v-if="props.patient">
                 <textarea placeholder="memo" v-model="props.patient.memo"></textarea>
               </div>
             </div>

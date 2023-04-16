@@ -1,6 +1,3 @@
-import { number } from '@intlify/core-base'
-import { strict } from 'assert'
-import { stringify } from 'querystring'
 import {
   AnnotationBody,
   CloseBody,
@@ -22,7 +19,8 @@ class AuthClient extends AuthApiRequest {
     limit: number,
     offset: number,
     patient: number | undefined = undefined,
-    terminal: number | undefined = undefined
+    terminal: number | undefined = undefined,
+    keywords: string | undefined = undefined
   ): Promise<Measurements> {
     var params: { [name: string]: any } = {
       limit: limit,
@@ -33,6 +31,9 @@ class AuthClient extends AuthApiRequest {
     }
     if (terminal) {
       params['terminal'] = terminal
+    }
+    if (keywords) {
+      params['keyword'] = keywords.split(' ')
     }
     let res = await this.axios().get(`/1/measurements`, {
       params: params,

@@ -1,69 +1,76 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, inject, getCurrentInstance } from "vue";
-import { useRoute } from "vue-router";
+import { computed, onMounted, ref, inject, getCurrentInstance } from 'vue'
+import { useRoute } from 'vue-router'
 
-import HeaderComp from "../components/HeaderComp.vue";
-import Loading from "../components/Loading.vue";
+import HeaderComp from '../components/HeaderComp.vue'
+import Loading from '../components/Loading.vue'
 
-import useMeasurement from "../composables/net/measurement";
-import { Measurement, Patient } from "../types/response-types";
+import useMeasurement from '../composables/net/measurement'
+import { Measurement, Patient } from '../types/response-types'
 
-import Paginate from "vuejs-paginate-next";
-import EditPatientModal from "../components/modal/EditPatientModal.vue";
+import Paginate from 'vuejs-paginate-next'
+import EditPatientModal from '../components/modal/EditPatientModal.vue'
 
 // tslint:disable-next-line:no-var-requires
 //const Paginate = require("vuejs-paginate-next");
-const app = getCurrentInstance();
-const dayjs = app?.appContext.config.globalProperties.$dayjs;
+const app = getCurrentInstance()
+const dayjs = app?.appContext.config.globalProperties.$dayjs
 
-const total = ref<number>(0);
-const measurements = ref<Measurement[]>([]);
-const pageCount = ref<number>(1);
-const perPage = ref<number>(30);
-const offset = ref<number>(0);
-const selectedPatient = ref<Patient | undefined>(undefined);
+const total = ref<number>(0)
+const measurements = ref<Measurement[]>([])
+const keywords = ref<string>('')
+const pageCount = ref<number>(1)
+const perPage = ref<number>(30)
+const offset = ref<number>(0)
+const selectedPatient = ref<Patient>()
 
-const { listMeasurements } = useMeasurement();
+const { listMeasurements } = useMeasurement()
 
-const loading = ref<boolean>(true);
+const loading = ref<boolean>(true)
 const fetchMeasurements = async () => {
   try {
-    [total.value, measurements.value] = await listMeasurements(
+    ;[total.value, measurements.value] = await listMeasurements(
       perPage.value,
-      offset.value
-    );
-    pageCount.value = Math.floor(total.value / perPage.value) + 1;
+      offset.value,
+      undefined,
+      undefined,
+      keywords.value
+    )
+    pageCount.value = Math.floor(total.value / perPage.value) + 1
   } finally {
-    loading.value = false;
+    loading.value = false
   }
-};
+}
 
 const measurementTime = (measurement: Measurement) => {
-  let min = dayjs(measurement.lastTime).diff(dayjs(measurement.firstTime), "m", true);
-  let sec = (min - Math.floor(min)) * 60.0;
+  let min = dayjs(measurement.lastTime).diff(dayjs(measurement.firstTime), 'm', true)
+  let sec = (min - Math.floor(min)) * 60.0
   return (
-    String(Math.floor(min)).padStart(2, "0") +
-    ":" +
-    String(Math.floor(sec)).padStart(2, "0")
-  );
-};
+    String(Math.floor(min)).padStart(2, '0') +
+    ':' +
+    String(Math.floor(sec)).padStart(2, '0')
+  )
+}
 
 const onPageClicked = async (page: number) => {
-  offset.value = (page - 1) * perPage.value;
-  fetchMeasurements();
-};
+  offset.value = (page - 1) * perPage.value
+  fetchMeasurements()
+}
 
 const onOpenEditPatient = (patient: Patient) => {
-  selectedPatient.value = patient;
-  isOpenEditPatient.value = true;
-};
+  if (patient == null) {
+    return
+  }
+  selectedPatient.value = patient
+  isOpenEditPatient.value = true
+}
 
 onMounted(() => {
   // 計測一覧を取得する
-  fetchMeasurements();
-});
+  fetchMeasurements()
+})
 
-const isOpenEditPatient = ref<boolean>(false);
+const isOpenEditPatient = ref<boolean>(false)
 </script>
 
 <template>
@@ -76,13 +83,15 @@ const isOpenEditPatient = ref<boolean>(false);
   />
   <div class="content-main status-success">
     <h1 class="page-title">
-      <i class="fa-solid fa-person-pregnant"></i>{{ $t("measurementList") }}
+      <i class="fa-solid fa-person-pregnant"></i>{{ $t('measurementList') }}
     </h1>
 
     <section class="list-search">
       <div class="list-search__input">
-        <input type="text" id="" name="" required="" :placeholder="$t('searchWords')" />
-        <button type="submit" class="btn list-btn">{{ $t("search") }}</button>
+        <input v-model.trim="keywords" type="text" :placeholder="$t('searchWords')" />
+        <button type="submit" class="btn list-btn" @click="fetchMeasurements">
+          {{ $t('search') }}
+        </button>
       </div>
     </section>
 
@@ -129,13 +138,13 @@ const isOpenEditPatient = ref<boolean>(false);
         <div class="list__table">
           <div class="list__row list__title">
             <div class="list__col list__id">ID</div>
-            <div class="list__col list__status">{{ $t("isClosed") }}</div>
-            <div class="list__col list__code">{{ $t("measurementCode") }}</div>
-            <div class="list__col list__code">{{ $t("patientName") }}</div>
-            <div class="list__col list__update">{{ $t("measurementStartAt") }}</div>
-            <div class="list__col list__update">{{ $t("measurementUpdateAt") }}</div>
-            <div class="list__col list__update">{{ $t("measurementTime") }}</div>
-            <div class="list__col list__oparation">{{ $t("toGraph") }}</div>
+            <div class="list__col list__status">{{ $t('isClosed') }}</div>
+            <div class="list__col list__code">{{ $t('measurementCode') }}</div>
+            <div class="list__col list__code">{{ $t('patientName') }}</div>
+            <div class="list__col list__update">{{ $t('measurementStartAt') }}</div>
+            <div class="list__col list__update">{{ $t('measurementUpdateAt') }}</div>
+            <div class="list__col list__update">{{ $t('measurementTime') }}</div>
+            <div class="list__col list__oparation">{{ $t('toGraph') }}</div>
           </div>
           <!-- /.list__title -->
           <div
@@ -148,8 +157,8 @@ const isOpenEditPatient = ref<boolean>(false);
           >
             <div class="list__col list__id">{{ measurement.id }}</div>
             <div class="list__col list__status">
-              <template v-if="measurement.isClosed">{{ $t("isClosed") }} </template>
-              <template v-else>{{ $t("isRunning") }}</template>
+              <template v-if="measurement.isClosed">{{ $t('isClosed') }} </template>
+              <template v-else>{{ $t('isRunning') }}</template>
             </div>
             <div class="list__col list__code">{{ measurement.code }}</div>
             <div class="list__col list__code">
@@ -158,15 +167,15 @@ const isOpenEditPatient = ref<boolean>(false);
                   {{ measurement.patient.name }}
                 </template>
                 <template v-else>
-                  {{ $t("n_a") }}
+                  {{ $t('n_a') }}
                 </template>
               </a>
             </div>
             <div class="list__col list__update">
-              {{ dayjs(measurement.firstTime).format("YYYY-MM-DD HH:mm:ss") }}
+              {{ dayjs(measurement.firstTime).format('YYYY-MM-DD HH:mm:ss') }}
             </div>
             <div class="list__col list__update">
-              {{ dayjs(measurement.lastTime).format("YYYY-MM-DD HH:mm:ss") }}
+              {{ dayjs(measurement.lastTime).format('YYYY-MM-DD HH:mm:ss') }}
             </div>
             <div class="list__col list__update">
               {{ measurementTime(measurement) }}
