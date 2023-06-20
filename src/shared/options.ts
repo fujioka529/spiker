@@ -4,7 +4,6 @@ type Option = {
 }
 
 export const timescaleOptions: Option[] = [
-  { label: 'min6', value: 6 },
   { label: 'min12', value: 12 },
   { label: 'min20', value: 20 },
   { label: 'min40', value: 40 },
