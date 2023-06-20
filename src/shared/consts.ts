@@ -7,7 +7,7 @@ const timerIntervals: { [name: string]: number } = {
 
 export { timerIntervals }
 
-export const defaultDataMinutes: number = 6
+export const defaultDataMinutes: number = 12
 
 export const dataIntervalMillSecs: number = 1000
 
