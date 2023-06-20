@@ -1,37 +1,37 @@
 <script setup lang="ts">
-import { CurrentMeasurement } from "../types/response-types";
-import { useVModels } from "@vueuse/core";
-import { timescaleOptions } from "../shared/options";
-import { ref, getCurrentInstance } from "vue";
-import CallDoctorModal from "../components/modal/CallDoctorModal.vue";
-import TerminateModal from "../components/modal/TerminateModal.vue";
+import { CurrentMeasurement } from '../types/response-types'
+import { useVModels } from '@vueuse/core'
+import { timescaleOptions } from '../shared/options'
+import { ref, getCurrentInstance } from 'vue'
+import CallDoctorModal from '../components/modal/CallDoctorModal.vue'
+import TerminateModal from '../components/modal/TerminateModal.vue'
 
-const app = getCurrentInstance();
-const dayjs = app?.appContext.config.globalProperties.$dayjs;
+const app = getCurrentInstance()
+const dayjs = app?.appContext.config.globalProperties.$dayjs
 
 interface Props {
-  measurement: CurrentMeasurement | undefined;
-  timescale: number;
-  isAuto: boolean;
-  playback: boolean;
+  measurement: CurrentMeasurement | undefined
+  timescale: number
+  isAuto: boolean
+  playback: boolean
 }
 const props = withDefaults(defineProps<Props>(), {
   measurement: undefined,
   playback: false,
-});
+})
 
 interface Emits {
-  (e: "update:isAuto", value: boolean): void;
-  (e: "update:timescale", value: number): void;
-  (e: "onLatestClicked", value: null): void;
-  (e: "onPrevClicked", value: null): void;
-  (e: "onNextClicked", value: null): void;
+  (e: 'update:isAuto', value: boolean): void
+  (e: 'update:timescale', value: number): void
+  (e: 'onLatestClicked', value: null): void
+  (e: 'onPrevClicked', value: null): void
+  (e: 'onNextClicked', value: null): void
 }
-const emit = defineEmits<Emits>();
-const { timescale, isAuto } = useVModels(props, emit);
+const emit = defineEmits<Emits>()
+const { timescale, isAuto } = useVModels(props, emit)
 
-const isOpenCallDoctor = ref<boolean>(false);
-const isOpenTermination = ref<boolean>(false);
+const isOpenCallDoctor = ref<boolean>(false)
+const isOpenTermination = ref<boolean>(false)
 </script>
 
 <template>
@@ -55,17 +55,17 @@ const isOpenTermination = ref<boolean>(false);
         <div class="summary__date">
           <i class="fa-regular fa-clock"></i>
           <div class="date-start">
-            {{ dayjs(measurement.firstTime).format("HH:mm:ss") }}
+            {{ dayjs(measurement.firstTime).format('HH:mm:ss') }}
             <span class="utc"
-              >UTC: {{ dayjs(measurement.firstTime).utc().format("HH:mm:ss") }}</span
+              >UTC: {{ dayjs(measurement.firstTime).utc().format('HH:mm:ss') }}</span
             >
           </div>
           <div class="date-range"></div>
           <i class="fa-regular fa-clock"></i>
           <div class="date-end">
-            {{ dayjs(measurement.lastTime).format("HH:mm:ss") }}
+            {{ dayjs(measurement.lastTime).format('HH:mm:ss') }}
             <span class="utc"
-              >UTC: {{ dayjs(measurement.lastTime).utc().format("HH:mm:ss") }}</span
+              >UTC: {{ dayjs(measurement.lastTime).utc().format('HH:mm:ss') }}</span
             >
           </div>
         </div>
@@ -74,41 +74,7 @@ const isOpenTermination = ref<boolean>(false);
         <dl>
           <div>
             <dt>
-              <template
-                v-if="
-                  measurement.latestEvent && measurement.latestEvent.type == 'annotation'
-                "
-              >
-                <i class="fa-solid fa-user-nurse"></i><span>MIDWIFE</span>
-              </template>
-              <template v-else>
-                <i class="fa-solid fa-rainbow"></i><span>JUDY</span>
-              </template>
-            </dt>
-            <dd>
-              <template v-if="measurement.latestEvent && measurement.latestEvent.risk">
-                {{ $t("risk") }}:{{ measurement.latestEvent.risk }}
-              </template>
-              <template v-else>N/A</template>
-            </dd>
-          </div>
-          <div>
-            <dt>
-              <i class="fa-solid fa-briefcase-medical"></i
-              ><span>{{ $t("intervention") }}</span>
-            </dt>
-            <dd>
-              <template v-if="measurement.lastestIntervention">
-                {{ $t(measurement.lastestIntervention.interventionKind) }}
-              </template>
-              <template v-else>N/A </template>
-            </dd>
-          </div>
-        </dl>
-        <dl>
-          <div>
-            <dt>
-              <i class="fa-solid fa-arrow-trend-up"></i><span>{{ $t("BaseLine") }}</span>
+              <i class="fa-solid fa-arrow-trend-up"></i><span>{{ $t('BaseLine') }}</span>
             </dt>
             <dd>
               <template
@@ -126,7 +92,7 @@ const isOpenTermination = ref<boolean>(false);
           <div>
             <dt>
               <i class="fa-solid fa-arrow-down-up-across-line"></i
-              ><span>{{ $t("Valiability") }}</span>
+              ><span>{{ $t('Valiability') }}</span>
             </dt>
             <dd>
               <template
@@ -142,13 +108,47 @@ const isOpenTermination = ref<boolean>(false);
             </dd>
           </div>
         </dl>
+        <dl>
+          <div>
+            <dt>
+              <template
+                v-if="
+                  measurement.latestEvent && measurement.latestEvent.type == 'annotation'
+                "
+              >
+                <i class="fa-solid fa-user-nurse"></i><span>MIDWIFE</span>
+              </template>
+              <template v-else>
+                <i class="fa-solid fa-rainbow"></i><span>JUDY</span>
+              </template>
+            </dt>
+            <dd>
+              <template v-if="measurement.latestEvent && measurement.latestEvent.risk">
+                {{ $t('risk') }}:{{ measurement.latestEvent.risk }}
+              </template>
+              <template v-else>N/A</template>
+            </dd>
+          </div>
+          <div>
+            <dt>
+              <i class="fa-solid fa-briefcase-medical"></i
+              ><span>{{ $t('intervention') }}</span>
+            </dt>
+            <dd>
+              <template v-if="measurement.lastestIntervention">
+                {{ $t(measurement.lastestIntervention.interventionKind) }}
+              </template>
+              <template v-else>N/A </template>
+            </dd>
+          </div>
+        </dl>
       </div>
 
       <div class="summary-btn-end" v-if="!playback">
         <a class="btn btn-end" href="" @click.stop.prevent="isOpenTermination = true">
           <div>
             <i class="fa-regular fa-circle-stop"></i>
-            <span>{{ $t("terminate") }}</span>
+            <span>{{ $t('terminate') }}</span>
           </div>
         </a>
       </div>
@@ -205,7 +205,7 @@ const isOpenTermination = ref<boolean>(false);
               'is-disabled': isAuto,
             }"
             @click.stop.prevent="emit('onLatestClicked', null)"
-            >{{ $t("latest") }}</a
+            >{{ $t('latest') }}</a
           >
         </div>
       </div>
