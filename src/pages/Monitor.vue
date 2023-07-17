@@ -7,24 +7,24 @@ import {
   toRefs,
   watch,
   getCurrentInstance,
-} from "vue";
-import { useRoute } from "vue-router";
-import { timescaleOptions } from "../shared/options";
-import SummaryComp from "../components/SummaryComp.vue";
-import ChartComp from "../components/ChartComp.vue";
-import DiganosisComp from "../components/DiganosisComp.vue";
-import SoundConfirm from "../components/modal/SoundConfirm.vue";
-import Loading from "../components/Loading.vue";
-import { dataIntervalMillSecs } from "../shared/consts";
-import useMeasurement from "../composables/net/measurement";
-import { timerIntervals } from "../shared/consts";
-import { CurrentMeasurement, Event, Intervention } from "../types/response-types";
-import { alertManager } from "../lib/alert";
-import { intervalManager } from "../lib/interval_manager";
-import { useControlPanelStore } from "../store/control_panel";
+} from 'vue'
+import { useRoute } from 'vue-router'
+import { timescaleOptions } from '../shared/options'
+import SummaryComp from '../components/SummaryComp.vue'
+import ChartComp from '../components/ChartComp.vue'
+import DiganosisComp from '../components/DiganosisComp.vue'
+import SoundConfirm from '../components/modal/SoundConfirm.vue'
+import Loading from '../components/Loading.vue'
+import { dataIntervalMillSecs } from '../shared/consts'
+import useMeasurement from '../composables/net/measurement'
+import { timerIntervals } from '../shared/consts'
+import { CurrentMeasurement, Event, Intervention } from '../types/response-types'
+import { alertManager } from '../lib/alert'
+import { intervalManager } from '../lib/interval_manager'
+import { useControlPanelStore } from '../store/control_panel'
 
-const loading = ref<boolean>(true);
-const activeTab = ref<number>(0);
+const loading = ref<boolean>(true)
+const activeTab = ref<number>(0)
 // イベント
 
 const {
@@ -33,62 +33,62 @@ const {
   fetchTocos,
   listEvents,
   listInterventions,
-} = useMeasurement();
-const measurements = ref<CurrentMeasurement[]>();
-const selectedMeasurement = ref<CurrentMeasurement>();
+} = useMeasurement()
+const measurements = ref<CurrentMeasurement[]>()
+const selectedMeasurement = ref<CurrentMeasurement>()
 
-const store = useControlPanelStore();
+const store = useControlPanelStore()
 
 const { isAuto, timescale } = toRefs(
   reactive({
     isAuto: store.isAuto,
     timescale: store.timescale,
   })
-);
+)
 
 // 時間範囲の変更。
 watch(
   () => timescale.value,
   (value) => {
-    store.timescale = value;
-    updateChartData();
+    store.timescale = value
+    updateChartData()
   }
-);
+)
 
 // 自動取得の変更。
 watch(
   () => isAuto.value,
   (value) => {
-    store.isAuto = value;
+    store.isAuto = value
   }
-);
+)
 
 // 前ボタンクリック。
 const onPrevClicked = () => {
   if (!isAuto.value) {
-    const { prev } = store;
-    prev();
-    updateChartData();
+    const { prev } = store
+    prev()
+    updateChartData()
   }
-};
+}
 
 // 次へボタンクリック。
 const onNextClicked = () => {
   if (!isAuto.value) {
-    const { next } = store;
-    next();
-    updateChartData();
+    const { next } = store
+    next()
+    updateChartData()
   }
-};
+}
 
 // 最新ボタンクリック。
 const onLatestClicked = () => {
   if (!isAuto.value) {
-    const { latest } = store;
-    latest();
-    updateChartData();
+    const { latest } = store
+    latest()
+    updateChartData()
   }
-};
+}
 
 // 計測リクエスト。
 
@@ -97,28 +97,28 @@ watch(
   (newValue, oldValue) => {
     if (newValue?.id != oldValue?.id) {
       // 別のグラフ取得に切りかえる。
-      resetFetchTime();
+      resetFetchTime()
     }
   }
-);
+)
 
 const resetFetchTime = () => {
   if (selectedMeasurement.value) {
-    const { setTime } = store;
-    setTime(selectedMeasurement.value.firstTime, selectedMeasurement.value.lastTime);
-    updateChartData();
+    const { setTime } = store
+    setTime(selectedMeasurement.value.firstTime, selectedMeasurement.value.lastTime)
+    updateChartData()
   }
-};
+}
 
 // 計測中の一覧を取得する。
 const fetchCurrentMeasuments = async () => {
-  let res = await currentMeasurements();
-  measurements.value = res.measurements;
+  let res = await currentMeasurements()
+  measurements.value = res.measurements
 
   if (measurements.value.length == 0) {
     // 計測がなくなった場合。
-    selectedMeasurement.value = undefined;
-    activeTab.value = 0;
+    selectedMeasurement.value = undefined
+    activeTab.value = 0
   } else {
     if (
       activeTab.value == 0 ||
@@ -126,40 +126,40 @@ const fetchCurrentMeasuments = async () => {
     ) {
       // 選択されているタブが存在しない場合。
       // 選択中の計測が対象ではなくなった場合は変更する。
-      selectedMeasurement.value = measurements.value[0];
-      activeTab.value = measurements.value[0].id;
-      resetFetchTime();
-      const { resetEvents } = store;
-      resetEvents();
-      updateEventData();
+      selectedMeasurement.value = measurements.value[0]
+      activeTab.value = measurements.value[0].id
+      resetFetchTime()
+      const { resetEvents } = store
+      resetEvents()
+      updateEventData()
     } else {
-      let candidates = measurements.value.filter((m) => m.id == activeTab.value);
+      let candidates = measurements.value.filter((m) => m.id == activeTab.value)
       if (candidates.length > 0) {
         // 新しい情報を設定する
-        selectedMeasurement.value = candidates[0];
+        selectedMeasurement.value = candidates[0]
         if (store.isAuto) {
-          resetFetchTime();
+          resetFetchTime()
         }
-        updateEventData();
+        updateEventData()
       }
     }
   }
 
   if (!isOpenSoundConfirm.value) {
     // 現在の計測状況を更新してアラートを発動する。
-    alertManager.updateMeasurements(measurements.value);
+    alertManager.updateMeasurements(measurements.value)
   }
-};
+}
 
-const app = getCurrentInstance();
-const dayjs = app?.appContext.config.globalProperties.$dayjs;
+const app = getCurrentInstance()
+const dayjs = app?.appContext.config.globalProperties.$dayjs
 
-const hrLabels = ref<number[]>([]);
-const hrValues = ref<number[]>([]);
-const tcLabels = ref<number[]>([]);
-const tcValues = ref<number[]>([]);
-const events = ref<Event[]>([]);
-const interventions = ref<Intervention[]>([]);
+const hrLabels = ref<number[]>([])
+const hrValues = ref<number[]>([])
+const tcLabels = ref<number[]>([])
+const tcValues = ref<number[]>([])
+const events = ref<Event[]>([])
+const interventions = ref<Intervention[]>([])
 
 const updateChartData = () => {
   if (selectedMeasurement.value && store.end) {
@@ -169,70 +169,70 @@ const updateChartData = () => {
       store.timescale,
       dataIntervalMillSecs
     ).then((values: [number[], number[]]) => {
-      hrLabels.value = values[0];
-      hrValues.value = values[1];
-    });
+      hrLabels.value = values[0]
+      hrValues.value = values[1]
+    })
     fetchTocos(
       selectedMeasurement.value.id,
       store.end,
       store.timescale,
       dataIntervalMillSecs
     ).then((values: [number[], number[]]) => {
-      tcLabels.value = values[0];
-      tcValues.value = values[1];
-    });
+      tcLabels.value = values[0]
+      tcValues.value = values[1]
+    })
   }
-};
+}
 
 const updateEventData = () => {
   if (selectedMeasurement.value) {
     listEvents(selectedMeasurement.value?.id, store.eventStart).then(
       (values: Event[]) => {
         if (values.length > 0) {
-          events.value = events.value.concat(values);
+          events.value = events.value.concat(values)
           events.value.sort((a, b) => {
-            return dayjs(a.rangeFrom).unix() < dayjs(b.rangeFrom).unix() ? -1 : 1;
-          });
-          store.eventStart = values[values.length - 1].id;
+            return dayjs(a.rangeFrom).unix() < dayjs(b.rangeFrom).unix() ? -1 : 1
+          })
+          store.eventStart = values[values.length - 1].id
         }
       }
-    );
+    )
     listInterventions(selectedMeasurement.value?.id, store.inventionStart).then(
       (values: Intervention[]) => {
         if (values.length > 0) {
-          interventions.value = interventions.value.concat(values);
+          interventions.value = interventions.value.concat(values)
           interventions.value.sort((a, b) => {
-            return dayjs(a.rangeFrom).unix() < dayjs(b.rangeFrom).unix() ? -1 : 1;
-          });
-          store.inventionStart = values[values.length - 1].id;
+            return dayjs(a.rangeFrom).unix() < dayjs(b.rangeFrom).unix() ? -1 : 1
+          })
+          store.inventionStart = values[values.length - 1].id
         }
       }
-    );
+    )
   }
-};
+}
 
 const onMesurementSelected = (measurement: CurrentMeasurement) => {
-  selectedMeasurement.value = measurement;
-  activeTab.value = measurement.id;
-};
+  selectedMeasurement.value = measurement
+  activeTab.value = measurement.id
+}
 
 //
 
-const isOpenSoundConfirm = ref<boolean>(true);
+const isOpenSoundConfirm = ref<boolean>(true)
 
 onMounted(() => {
-  intervalManager.start("fetchCurrents", {
+  intervalManager.start('fetchCurrents', {
     callback: async () => {
-      await fetchCurrentMeasuments();
+      await fetchCurrentMeasuments()
     },
     delayMillisec: timerIntervals.currentMesurements,
     isImmediately: true,
-  });
-});
+  })
+})
 
 onBeforeUnmount(() => {
-  intervalManager.stopAll();
-});
+  intervalManager.stopAll()
+})
 </script>
 
 <template>
@@ -249,7 +249,7 @@ onBeforeUnmount(() => {
           'is-active': activeTab == me.id,
         }"
       >
-        <a href="" @click.stop.prevent="onMesurementSelected(me)"
+        <a @click.stop.prevent="onMesurementSelected(me)"
           ><i class="fa-solid fa-person-pregnant"></i>{{ me.code }}</a
         >
       </li>
