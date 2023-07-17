@@ -5,7 +5,6 @@ const useAccount = () => {
   const login = async (loginId: string, password: string): Promise<boolean> => {
     try {
       let accessToken = await apiClient.login(loginId, password)
-      console.log(accessToken)
       const store = useAccessToken()
       store.$patch({
         accessToken: accessToken,

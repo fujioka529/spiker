@@ -9,8 +9,12 @@ interface Props {
   events: Event[]
   interventions: Intervention[]
 }
-
 const props = defineProps<Props>()
+
+interface Emits {
+  (e: 'onDeleteIntervention', value: number): void
+}
+const emit = defineEmits<Emits>()
 
 type EventType = 'JUDY' | 'INTERVENTION'
 const activeTab = ref<EventType | undefined>()
@@ -101,6 +105,13 @@ const activeTab = ref<EventType | undefined>()
                 ~
                 {{ dayjs(intervention.rangeUntil).format('HH:mm:ss') }}</span
               >
+              <span
+                ><a
+                  href=""
+                  @click.stop.prevent="emit('onDeleteIntervention', intervention.id)"
+                >
+                  <i class="fa-solid fa-trash"></i> </a
+              ></span>
             </div>
             <div class="">
               <template v-if="intervention.isIntervention">
