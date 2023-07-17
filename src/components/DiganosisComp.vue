@@ -1,19 +1,23 @@
 <script setup lang="ts">
-import { ref, getCurrentInstance } from "vue";
-import { Event, Intervention } from "../types/response-types";
+import { ref, getCurrentInstance } from 'vue'
+import { Event, Intervention } from '../types/response-types'
 
-const app = getCurrentInstance();
-const dayjs = app?.appContext.config.globalProperties.$dayjs;
+const app = getCurrentInstance()
+const dayjs = app?.appContext.config.globalProperties.$dayjs
 
 interface Props {
-  events: Event[];
-  interventions: Intervention[];
+  events: Event[]
+  interventions: Intervention[]
 }
+const props = defineProps<Props>()
 
-const props = defineProps<Props>();
+interface Emits {
+  (e: 'onDeleteIntervention', value: number): void
+}
+const emit = defineEmits<Emits>()
 
-type EventType = "JUDY" | "INTERVENTION";
-const activeTab = ref<EventType | undefined>();
+type EventType = 'JUDY' | 'INTERVENTION'
+const activeTab = ref<EventType | undefined>()
 </script>
 
 <template>
@@ -24,7 +28,7 @@ const activeTab = ref<EventType | undefined>();
           'is-active': activeTab == 'JUDY',
         }"
       >
-        <a href="" @click.stop.prevent="activeTab = 'JUDY'"
+        <a @click.stop.prevent="activeTab = 'JUDY'"
           ><i class="fa-solid fa-rainbow"></i>JUDY</a
         >
       </li>
@@ -33,10 +37,10 @@ const activeTab = ref<EventType | undefined>();
           'is-active': activeTab == 'INTERVENTION',
         }"
       >
-        <a href="" @click.stop.prevent="activeTab = 'INTERVENTION'">INTERVENTION</a>
+        <a @click.stop.prevent="activeTab = 'INTERVENTION'">INTERVENTION</a>
       </li>
       <li class="panel-close" v-if="activeTab != undefined">
-        <a href="" @click.stop.prevent="activeTab = undefined"
+        <a @click.stop.prevent="activeTab = undefined"
           ><i class="fa-solid fa-arrow-down-long"></i
         ></a>
       </li>
@@ -58,25 +62,25 @@ const activeTab = ref<EventType | undefined>();
           <li class="footer-panel__item" v-for="event in events" :key="event.id">
             <div class="item__title">
               <span>
-                {{ dayjs(event.rangeFrom).format("HH:mm:ss") }}
+                {{ dayjs(event.rangeFrom).format('HH:mm:ss') }}
                 ~
-                {{ dayjs(event.rangeUntil).format("HH:mm:ss") }}
+                {{ dayjs(event.rangeUntil).format('HH:mm:ss') }}
               </span>
             </div>
             <div class="" v-if="event.diagnosis">
               <template v-if="event.diagnosis.baseline">
-                <p>{{ $t("BaseLine") }} {{ event.diagnosis.baselineBpm }}bpm</p>
+                <p>{{ $t('BaseLine') }} {{ event.diagnosis.baselineBpm }}bpm</p>
               </template>
               <template
                 v-if="event.diagnosis.variability && event.diagnosis.variabilityBpm"
               >
                 <p>
-                  {{ $t("Valiability") }}: {{ event.diagnosis.variabilityBpm }}bpm
+                  {{ $t('Valiability') }}: {{ event.diagnosis.variabilityBpm }}bpm
                 </p></template
               >
               <template v-if="event.risk"
-                ><p>{{ $t("risk") }} {{ event.risk }}</p>
-                <p>{{ $t("risk" + event.risk) }}</p>
+                ><p>{{ $t('risk') }} {{ event.risk }}</p>
+                <p>{{ $t('risk' + event.risk) }}</p>
               </template>
             </div>
           </li>
@@ -97,19 +101,26 @@ const activeTab = ref<EventType | undefined>();
           >
             <div class="item__title">
               <span
-                >{{ dayjs(intervention.rangeFrom).format("HH:mm:ss") }}
+                >{{ dayjs(intervention.rangeFrom).format('HH:mm:ss') }}
                 ~
-                {{ dayjs(intervention.rangeUntil).format("HH:mm:ss") }}</span
+                {{ dayjs(intervention.rangeUntil).format('HH:mm:ss') }}</span
               >
+              <span
+                ><a
+                  href=""
+                  @click.stop.prevent="emit('onDeleteIntervention', intervention.id)"
+                >
+                  <i class="fa-solid fa-trash"></i> </a
+              ></span>
             </div>
             <div class="">
               <template v-if="intervention.isIntervention">
                 {{ $t(intervention.interventionKind) }} <br />
               </template>
               <template v-if="intervention.uterusOstium">
-                {{ $t("uterusOstium") }}: {{ intervention.uterusOstium }} cm <br />
+                {{ $t('uterusOstium') }}: {{ intervention.uterusOstium }} cm <br />
               </template>
-              {{ $t("memo") }}：{{ intervention.memo }}
+              {{ $t('memo') }}：{{ intervention.memo }}
             </div>
           </li>
         </ul>

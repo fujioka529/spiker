@@ -12,6 +12,7 @@ const useAccount = () => {
       return true
     } catch (e: any) {
       console.error(e)
+      throw e
     }
     return false
   }

@@ -79,6 +79,15 @@ class AuthClient extends AuthApiRequest {
     return res.data
   }
 
+  public async deleteMedicalIntervention(
+    measurementId: number,
+    interventionId: number
+  ): Promise<void> {
+    await this._delete(
+      `/1/measurements/${measurementId}/medical_events/${interventionId}`
+    )
+  }
+
   public async listHeartrates(
     measurementId: number,
     end: string,

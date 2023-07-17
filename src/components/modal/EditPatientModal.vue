@@ -1,40 +1,40 @@
 <script setup lang="ts">
-import path from "path";
-import { ref } from "vue";
-import useMeasurement from "../../composables/net/measurement";
-import { CurrentMeasurement, Patient } from "../../types/response-types";
-const loading = ref<boolean>(false);
+import path from 'path'
+import { ref } from 'vue'
+import useMeasurement from '../../composables/net/measurement'
+import { CurrentMeasurement, Patient } from '../../types/response-types'
+const loading = ref<boolean>(false)
 
-const { updatePatient } = useMeasurement();
+const { updatePatient } = useMeasurement()
 
 interface Props {
-  patient: Patient | undefined;
+  patient: Patient | undefined
 }
-const props = defineProps<Props>();
+const props = defineProps<Props>()
 
 interface Emits {
-  (e: "onCloseClicked", value: null): void;
+  (e: 'onCloseClicked', value: null): void
 }
 
-const emit = defineEmits<Emits>();
+const emit = defineEmits<Emits>()
 
 const onUpdatePatient = async () => {
-  if (props.patient!.name == "") {
-    return;
+  if (props.patient!.name == '') {
+    return
   }
   try {
-    loading.value = true;
+    loading.value = true
     await updatePatient(props.patient!.id, {
       name: props.patient!.name,
       memo: props.patient!.memo,
-    });
-    emit("onCloseClicked", null);
+    })
+    emit('onCloseClicked', null)
   } catch (e) {
-    console.log(e);
+    console.log(e)
   } finally {
-    loading.value = false;
+    loading.value = false
   }
-};
+}
 </script>
 
 <template>
@@ -42,14 +42,17 @@ const onUpdatePatient = async () => {
   <div class="modal active">
     <div class="modal__main modal__m">
       <div class="modal__close">
-        <a href="" class="modal__close__btn"
-          ><i class="fas fa-times" @click.stop.prevent="emit('onCloseClicked', null)"></i
+        <a
+          href=""
+          class="modal__close__btn"
+          @click.stop.prevent="emit('onCloseClicked', null)"
+          ><i class="fas fa-times"></i
         ></a>
       </div>
-      <h2 class="modal__heading">{{ $t("editPatientName") }}</h2>
+      <h2 class="modal__heading">{{ $t('editPatientName') }}</h2>
       <section class="modal__content">
         <form>
-          <p>{{ $t("enterNameAndMemo") }}</p>
+          <p>{{ $t('enterNameAndMemo') }}</p>
 
           <div class="item-row">
             <div class="item" v-if="props.patient">

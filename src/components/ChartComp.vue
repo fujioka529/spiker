@@ -1,136 +1,136 @@
 <script setup lang="ts">
-import { ref, watch, getCurrentInstance } from "vue";
-import { Event, Intervention } from "../types/response-types";
-import CTGChart from "../lib/chart";
-import { Area } from "../shared/classes";
-import Chart from "chart.js/auto";
-import MedicalIntervention from "../components/modal/MedicalIntervention.vue";
-import Loading from "../components/Loading.vue";
+import { ref, watch, getCurrentInstance } from 'vue'
+import { Event, Intervention } from '../types/response-types'
+import CTGChart from '../lib/chart'
+import { Area } from '../shared/classes'
+import Chart from 'chart.js/auto'
+import MedicalIntervention from '../components/modal/MedicalIntervention.vue'
+import Loading from '../components/Loading.vue'
 
-const app = getCurrentInstance();
-const dayjs = app?.appContext.config.globalProperties.$dayjs;
+const app = getCurrentInstance()
+const dayjs = app?.appContext.config.globalProperties.$dayjs
 
 interface Props {
-  measurementId: number;
-  hrLabels: number[];
-  hrValues: number[];
-  tcLabels: number[];
-  tcValues: number[];
-  events: Event[];
-  interventions: Intervention[];
+  measurementId: number
+  hrLabels: number[]
+  hrValues: number[]
+  tcLabels: number[]
+  tcValues: number[]
+  events: Event[]
+  interventions: Intervention[]
 }
 
-const props = defineProps<Props>();
+const props = defineProps<Props>()
 
-const hrChartRef = ref<HTMLCanvasElement>();
-const tocoChartRef = ref<HTMLCanvasElement>();
-const latestTime = ref<string>();
+const hrChartRef = ref<HTMLCanvasElement>()
+const tocoChartRef = ref<HTMLCanvasElement>()
+const latestTime = ref<string>()
 
-let hrChart: CTGChart | null = null;
-let tcChart: CTGChart | null = null;
+let hrChart: CTGChart | null = null
+let tcChart: CTGChart | null = null
 
-const beginTime = ref<number>();
-const endTime = ref<number>();
+const beginTime = ref<number>()
+const endTime = ref<number>()
 
-const isOpenMedicalIntervention = ref<boolean>(false);
+const isOpenMedicalIntervention = ref<boolean>(false)
 
 const updateArea = (chart: Chart, event: string, begin: number, end: number) => {
-  const xscale = chart.scales["x"];
-  beginTime.value = xscale.getValueForPixel(begin);
-  endTime.value = xscale.getValueForPixel(end);
+  const xscale = chart.scales['x']
+  beginTime.value = xscale.getValueForPixel(begin)
+  endTime.value = xscale.getValueForPixel(end)
   if (beginTime.value && endTime.value) {
-    let area = new Area(begin, end, beginTime.value, endTime.value);
-    hrChart?.drawArea(area);
-    tcChart?.drawArea(area);
+    let area = new Area(begin, end, beginTime.value, endTime.value)
+    hrChart?.drawArea(area)
+    tcChart?.drawArea(area)
 
-    if (event == "mouseup") {
+    if (event == 'mouseup') {
       setTimeout(() => {
-        isOpenMedicalIntervention.value = true;
-      }, 500);
+        isOpenMedicalIntervention.value = true
+      }, 500)
     }
   }
-};
+}
 
 const onCloseMedicalIntervention = () => {
-  isOpenMedicalIntervention.value = false;
-  hrChart?.drawArea(null);
-  tcChart?.drawArea(null);
-};
+  isOpenMedicalIntervention.value = false
+  hrChart?.drawArea(null)
+  tcChart?.drawArea(null)
+}
 
 watch(
   () => hrChartRef.value,
   (newRef) => {
-    hrChart = new CTGChart(newRef!.getContext("2d")!, {
-      graphTitle: "HR",
-      borderColor: "rgba(100, 100, 100, 1.0)",
+    hrChart = new CTGChart(newRef!.getContext('2d')!, {
+      graphTitle: 'HR',
+      borderColor: 'rgba(100, 100, 100, 1.0)',
       borderWidth: 1.0,
       updateDragArea: updateArea,
       yMin: 30.0,
       yMax: 200.0,
       isFHR: true,
-    });
-    hrChart?.updateData(props.hrLabels, props.hrValues);
+    })
+    hrChart?.updateData(props.hrLabels, props.hrValues)
   }
-);
+)
 
 watch(
   () => tocoChartRef.value,
   (newRef) => {
-    tcChart = new CTGChart(newRef!.getContext("2d")!, {
-      graphTitle: "TOCO",
-      borderColor: "rgba(100, 100, 100, 1.0)",
+    tcChart = new CTGChart(newRef!.getContext('2d')!, {
+      graphTitle: 'TOCO',
+      borderColor: 'rgba(100, 100, 100, 1.0)',
       borderWidth: 1.0,
       updateDragArea: undefined,
       yMin: 0.0,
       yMax: 100.0,
       isFHR: false,
-    });
-    tcChart?.updateData(props.tcLabels, props.tcValues);
+    })
+    tcChart?.updateData(props.tcLabels, props.tcValues)
   }
-);
+)
 
 watch(
   () => props.hrLabels,
   () => {
-    hrChart?.updateData(props.hrLabels, props.hrValues);
+    hrChart?.updateData(props.hrLabels, props.hrValues)
     if (props.hrLabels.length > 0) {
       latestTime.value = dayjs
         .unix(props.hrLabels[props.hrLabels.length - 1] / 1000.0)
-        .toISOString();
+        .toISOString()
     }
   }
-);
+)
 
 watch(
   () => props.tcLabels,
   () => {
-    tcChart?.updateData(props.tcLabels, props.tcValues);
+    tcChart?.updateData(props.tcLabels, props.tcValues)
   }
-);
+)
 
 watch(
   () => props.events,
   () => {
-    hrChart?.updateEvents(props.events);
+    hrChart?.updateEvents(props.events)
   }
-);
+)
 
 watch(
   () => props.interventions,
   () => {
-    hrChart?.updateInterventions(props.interventions);
+    hrChart?.updateInterventions(props.interventions)
   }
-);
+)
 
-const loading = ref<boolean>(true);
+const loading = ref<boolean>(true)
 </script>
 
 <template>
   <section class="content-chart">
     <div class="chart-area chart-main">
       <div class="chart__time">
-        <span>{{ dayjs(latestTime).format("HH:mm:ss") }}</span> / UTC:
-        {{ dayjs(latestTime).utc().format("HH:mm:ss") }}
+        <span>{{ dayjs(latestTime).format('HH:mm:ss') }}</span> / UTC:
+        {{ dayjs(latestTime).utc().format('HH:mm:ss') }}
       </div>
       <h2 class="chart__title"><i class="fa-solid fa-heart"></i>Heart Rate</h2>
       <div class="wrap-chart">
