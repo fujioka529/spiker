@@ -117,6 +117,13 @@ const useMeasurement = () => {
     await authClient.createMedicalIntervention(measurementId, params)
   }
 
+  const deleteMedicalIntervention = async (
+    measurementId: number,
+    interventionId: number
+  ): Promise<void> => {
+    await authClient.deleteMedicalIntervention(measurementId, interventionId)
+  }
+
   const updatePatient = async (patientId: number, params: PatientBody) => {
     await authClient.updatePatient(patientId, params.name, params.memo)
   }
@@ -133,6 +140,7 @@ const useMeasurement = () => {
     closeAnnotation,
     closeMeasurement,
     createMedicalIntervention,
+    deleteMedicalIntervention,
     updatePatient,
   }
 }

@@ -100,6 +100,7 @@ const messages = {
     'Hide Confirm': 'Do you want to hide this diagnostic?',
     'Show Confirm': 'Do you want to show this diagnostic?',
     'Delete Confirm': 'Do you want to hide this risk?',
+    DeleteIntervention: 'Are you sure you want to delete this intervention?',
 
     search: 'Search',
     searchWords: 'Name or Code',
@@ -213,6 +214,7 @@ const messages = {
     'Hide Confirm': 'この診断を病院側で非表示にしますか？',
     'Show Confirm': 'この診断を病院側で表示しますか？',
     'Delete Confirm': 'このリスクを削除しますか？',
+    DeleteIntervention: 'この医療介入を削除しますか？',
 
     search: '検索',
     searchWords: '名前または患者コードを入力してください',
