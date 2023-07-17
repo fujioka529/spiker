@@ -7,5 +7,6 @@ export default defineConfig({
   plugins: [vue()],
   build: {
     chunkSizeWarningLimit: 100000000,
+    outDir: process.env.VITE_BUILD_OUT_DIR || 'dist',
   },
 })
