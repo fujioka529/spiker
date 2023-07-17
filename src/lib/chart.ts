@@ -122,7 +122,7 @@ export default class CTGChart {
             unit: 'millisecond',
             stepSize: 20000,
             displayFormats: {
-              millisecond: 'hh:mm:ss',
+              millisecond: 'HH:mm:ss',
             },
           },
           ticks: {
