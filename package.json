@@ -1,11 +1,14 @@
 {
   "name": "spiker-alert-observer",
   "private": true,
-  "version": "0.1.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
+    "build_asia": "vue-tsc --noEmit && VITE_BUILD_OUT_DIR=dist/asia vite build --mode asia",
+    "build_africa": "vue-tsc --noEmit && VITE_BUILD_OUT_DIR=dist/africa vite build --mode africa",
+    "build_all": "npm run build_africa && npm run build_asia && zip -r dist.zip dist",
     "preview": "vite preview"
   },
   "dependencies": {
