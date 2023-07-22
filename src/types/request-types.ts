@@ -4,6 +4,11 @@ export type CloseBody = {
   memo: string
 }
 
+export type TerminationBody = {
+  maternalOutcome: string
+  memo: string
+}
+
 export type MedicalInterventionBody = {
   interventionKind: string | undefined
   isIntervention: boolean

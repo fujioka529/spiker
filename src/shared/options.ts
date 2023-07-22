@@ -27,15 +27,43 @@ export const alertNowOptions: Option[] = [
 
 export const medicalInterventionOptions: Option[] = [
   {
-    label: 'drop',
-    value: 'drop',
+    label: 'vaginal_exam',
+    value: 'vaginal_exam',
+  },
+  {
+    label: 'iv_fluid',
+    value: 'iv_fluid',
   },
   {
     label: 'change_position',
     value: 'change_position',
   },
+
+  {
+    label: 'c_section_decided',
+    value: 'c_section_decided',
+  },
   {
     label: 'doctor_call',
     value: 'doctor_call',
+  },
+  {
+    label: 'others',
+    value: 'others',
+  },
+]
+
+export const terminationOptions: Option[] = [
+  {
+    label: 'c_section',
+    value: 'c_section',
+  },
+  {
+    label: 'vacuum_delivery',
+    value: 'vacuum_delivery',
+  },
+  {
+    label: 'normal_delivery',
+    value: 'normal_delivery',
   },
 ]

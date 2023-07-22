@@ -16,6 +16,10 @@ interface Emits {
 }
 const emit = defineEmits<Emits>()
 
+const onDeleteIntervention = (id: number) => {
+  emit('onDeleteIntervention', id)
+}
+
 type EventType = 'JUDY' | 'INTERVENTION'
 const activeTab = ref<EventType | undefined>()
 </script>
@@ -106,10 +110,7 @@ const activeTab = ref<EventType | undefined>()
                 {{ dayjs(intervention.rangeUntil).format('HH:mm:ss') }}</span
               >
               <span
-                ><a
-                  href=""
-                  @click.stop.prevent="emit('onDeleteIntervention', intervention.id)"
-                >
+                ><a href="" @click.stop.prevent="onDeleteIntervention(intervention.id)">
                   <i class="fa-solid fa-trash"></i> </a
               ></span>
             </div>
@@ -125,13 +126,12 @@ const activeTab = ref<EventType | undefined>()
           </li>
         </ul>
       </div>
-
       <!--
       <div class="footer-panel__control">
         <a href=""><i class="fa-solid fa-clock-rotate-left"></i></a>
         <a href=""><i class="fa-solid fa-magnifying-glass-plus"></i></a>
       </div>
--->
+      -->
     </div>
   </section>
 </template>
