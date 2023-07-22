@@ -106,8 +106,12 @@ const useMeasurement = () => {
     await authClient.closeAnnotation(measurementId, annotationId, memo)
   }
 
-  const closeMeasurement = async (measurementId: number, memo: string) => {
-    await authClient.closeMeasurement(measurementId, memo)
+  const closeMeasurement = async (
+    measurementId: number,
+    maternalOutcome: string,
+    memo: string
+  ) => {
+    await authClient.closeMeasurement(measurementId, maternalOutcome, memo)
   }
 
   const createMedicalIntervention = async (

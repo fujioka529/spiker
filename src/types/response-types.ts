@@ -104,7 +104,13 @@ export type Events = {
   events: Event[]
 }
 
-export type InterventionKind = 'drop' | 'change_position' | 'doctor_call'
+export type InterventionKind =
+  | 'vaginal_exam'
+  | 'iv_fluid'
+  | 'change_position'
+  | 'c_section_decided'
+  | 'doctor_call'
+  | 'others'
 
 export type Intervention = {
   id: number
