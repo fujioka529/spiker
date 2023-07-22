@@ -33,6 +33,7 @@ const {
   fetchTocos,
   listEvents,
   listInterventions,
+  deleteMedicalIntervention,
 } = useMeasurement()
 const measurements = ref<CurrentMeasurement[]>()
 const selectedMeasurement = ref<CurrentMeasurement>()
@@ -216,7 +217,17 @@ const onMesurementSelected = (measurement: CurrentMeasurement) => {
   activeTab.value = measurement.id
 }
 
-//
+// onDeleteIntervention
+const onDeleteIntervention = async (interventionId: number) => {
+  if (confirm(t('DeleteIntervention'))) {
+    try {
+      await deleteMedicalIntervention(measurement.value!.id, interventionId)
+      interventions.value = interventions.value.filter((v) => v.id != interventionId)
+    } catch (e) {
+      alert(e)
+    }
+  }
+}
 
 const isOpenSoundConfirm = ref<boolean>(true)
 
@@ -287,6 +298,10 @@ onBeforeUnmount(() => {
       v-model:interventions="interventions"
     />
     <!-- section content-footer -->
-    <diganosis-comp v-model:events="events" v-model:interventions="interventions" />
+    <diganosis-comp
+      v-model:events="events"
+      v-model:interventions="interventions"
+      @on-delete-intervention="onDeleteIntervention"
+    />
   </div>
 </template>

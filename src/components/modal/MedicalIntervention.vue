@@ -36,7 +36,7 @@ watch(
 )
 
 const medicalIntervention = ref<string>()
-const uterusOstium = ref<number>()
+const uterusOstium = ref<number>(5)
 const memo = ref<string>('')
 
 const { createMedicalIntervention } = useMeasurement()
@@ -117,7 +117,21 @@ const onOKClicked = async () => {
           <div class="item-row">
             <div class="item item-flex">
               <label class="label">{{ $t('uterusOstium') }}</label>
-              <input class="inputs input__half" type="number" v-model="uterusOstium" />
+              <div class="select__wrap">
+                <select name="uterusOstium" v-model.number="uterusOstium">
+                  <option value="10">10</option>
+                  <option value="0">9</option>
+                  <option value="8">8</option>
+                  <option value="7">7</option>
+                  <option value="6">6</option>
+                  <option value="5">5</option>
+                  <option value="4">4</option>
+                  <option value="3">5</option>
+                  <option value="2">2</option>
+                  <option value="1">1</option>
+                  <option value="0">0</option>
+                </select>
+              </div>
               <label class="label">cm</label>
             </div>
             <!-- /.item -->

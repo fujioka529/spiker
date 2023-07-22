@@ -33,13 +33,19 @@ const messages = {
     drop: 'drop',
     change_position: 'Change Position',
     doctor_call: 'Doctor Call',
-    uterusOstium: 'Uterus Ostium',
+    uterusOstium: 'Col',
+    vaginal_exam: 'Vaginal exam',
+    iv_fluid: 'IV Fluid',
+    c_section_decided: 'C Section Decided',
+    others: 'Others',
 
     callDoctor: 'Call Doctor',
     callDoctorFromNow:
       'Do you take action now? \n If OK, the alert sound will be stopped.',
     terminate: 'Terminate',
-    terminateMeasurement: 'Do you want to close this measurement?',
+    terminateMeasurement:
+      'Are you sure you want to terminate this measurement?',
+    maternalOutcome: 'Maternal Outcome',
 
     patientList: 'Patient List',
     settings: 'Settings',
@@ -113,6 +119,11 @@ const messages = {
     name: 'name',
     enterNameAndMemo: 'Enter name and memo',
     enterNameAlert: "Please enter patient's name",
+
+    terminateMonitoring: 'Terminate Monitoring',
+    c_section: 'C-Section',
+    vacuum_delivery: 'Vacuum Delivery',
+    normal_delivery: 'Normal Delivery',
   },
   ja: {
     login: 'ログイン',
@@ -132,7 +143,11 @@ const messages = {
     intervention: '医療介入',
     medicalIntervention: '医療介入',
     drop: '点滴',
+    vaginal_exam: 'Vaginal exam',
+    iv_fluid: 'IV Fluid',
     change_position: '姿勢変更',
+    c_section_decided: '帝王切開決定',
+    others: 'その他',
     doctor_call: '医者呼出',
 
     measurementList: '計測一覧',
@@ -226,6 +241,11 @@ const messages = {
     name: '名前',
     enterNameAndMemo: '名前とメモを入力してください',
     enterNameAlert: '名前を入力してください',
+
+    terminateMonitoring: '計測終了',
+    c_section: '帝王切開',
+    vacuum_delivery: '真空吸引分娩',
+    normal_delivery: '自然分娩',
   },
 }
 

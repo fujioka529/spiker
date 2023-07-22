@@ -1,6 +1,7 @@
 import {
   AnnotationBody,
   CloseBody,
+  TerminationBody,
   MedicalInterventionBody,
 } from '../types/request-types'
 import {
@@ -171,11 +172,13 @@ class AuthClient extends AuthApiRequest {
 
   public async closeMeasurement(
     measurementId: number,
+    maternalOutcome: string,
     memo: string
   ): Promise<void> {
-    await this._post<CloseBody, void>(
+    await this._post<TerminationBody, void>(
       `/1/measurements/${measurementId}/close`,
       {
+        maternalOutcome: maternalOutcome,
         memo: memo,
       }
     )
