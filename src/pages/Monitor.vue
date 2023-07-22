@@ -154,6 +154,7 @@ const fetchCurrentMeasuments = async () => {
 
 const app = getCurrentInstance()
 const dayjs = app?.appContext.config.globalProperties.$dayjs
+const t = app?.appContext.config.globalProperties.$t
 
 const hrLabels = ref<number[]>([])
 const hrValues = ref<number[]>([])
@@ -221,7 +222,7 @@ const onMesurementSelected = (measurement: CurrentMeasurement) => {
 const onDeleteIntervention = async (interventionId: number) => {
   if (confirm(t('DeleteIntervention'))) {
     try {
-      await deleteMedicalIntervention(measurement.value!.id, interventionId)
+      await deleteMedicalIntervention(selectedMeasurement.value!.id, interventionId)
       interventions.value = interventions.value.filter((v) => v.id != interventionId)
     } catch (e) {
       alert(e)
