@@ -35,7 +35,7 @@ app.use(router)
 app.use(pinia)
 app.use(i18n)
 app.config.globalProperties.$dayjs = dayjs
-app.use(visibility)
+//app.use(visibility)
 //app.provide('dayjs', dayjs)
 app.component('Datepicker', Datepicker)
 app.mount('#app')

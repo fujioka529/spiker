@@ -111,7 +111,7 @@ const resetFetchTime = () => {
   }
 }
 
-// 計測中の一覧を取得する。
+// 計測中の一覧を取得する。측정 중인 목록을 가져옵니다.
 const fetchCurrentMeasuments = async () => {
   let res = await currentMeasurements()
   measurements.value = res.measurements
@@ -125,8 +125,8 @@ const fetchCurrentMeasuments = async () => {
       activeTab.value == 0 ||
       measurements.value.filter((m) => m.id == activeTab.value).length == 0
     ) {
-      // 選択されているタブが存在しない場合。
-      // 選択中の計測が対象ではなくなった場合は変更する。
+      // 選択されているタブが存在しない場合。선택된 탭이 존재하지 않는 경우.
+      // 選択中の計測が対象ではなくなった場合は変更する。선택 중인 측정이 더 이상 대상이 아닌 경우 변경합니다.
       selectedMeasurement.value = measurements.value[0]
       activeTab.value = measurements.value[0].id
       resetFetchTime()
@@ -136,7 +136,7 @@ const fetchCurrentMeasuments = async () => {
     } else {
       let candidates = measurements.value.filter((m) => m.id == activeTab.value)
       if (candidates.length > 0) {
-        // 新しい情報を設定する
+        // 新しい情報を設定する 새로운 정보 설정하기
         selectedMeasurement.value = candidates[0]
         if (store.isAuto) {
           resetFetchTime()
@@ -147,7 +147,7 @@ const fetchCurrentMeasuments = async () => {
   }
 
   if (!isOpenSoundConfirm.value) {
-    // 現在の計測状況を更新してアラートを発動する。
+    // 現在の計測状況を更新してアラートを発動する。현재 측정 상황을 업데이트하여 경고를 발동한다.
     alertManager.updateMeasurements(measurements.value)
   }
 }

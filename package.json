@@ -28,7 +28,8 @@
     "vue-i18n": "^9.2.2",
     "vue-router": "^4.1.2",
     "vue-visibility-change": "^1.2.1",
-    "vuejs-paginate-next": "^1.0.2"
+    "vuejs-paginate-next": "^1.0.2",
+    "yarn": "^1.22.19"
   },
   "devDependencies": {
     "@types/node": "^18.7.1",

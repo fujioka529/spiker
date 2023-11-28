@@ -59,7 +59,7 @@ const onLoginClicked = async () => {
                 v-model="form.password"
               />
             </div>
-            <p v-if="errorFlag" class="error">{{ $t('Incollect login or password') }}</p>
+            <p v-if="errorFlag" class="error">{{ $t('Incorrect login or password') }}</p>
             <div class="login_btn">
               <button
                 class="btn list-btn"
